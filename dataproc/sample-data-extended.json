@@ -1,0 +1,47 @@
+{
+    "list" : ["00001", "00002", "00003", "12127", "21128", "10150", "11111"], 
+    "dependency": {
+        "00001": {
+            "cross-listed": [],
+            "prereq": [],
+            "coreq": [],
+            "antireq": ["00001"],
+            "min-grade": []
+        }, 
+        "00002": {
+            "cross-listed": [],
+            "prereq": [],
+            "coreq": [],
+            "antireq": ["00002"],
+            "min-grade": []
+        }, 
+        "00003": {
+            "cross-listed": [],
+            "prereq": [],
+            "coreq": [],
+            "antireq": [],
+            "min-grade": []
+        }, 
+        "12127": {
+            "cross-listed": [],
+            "prereq": [],
+            "coreq": [],
+            "antireq": [],
+            "min-grade": []
+        }, 
+        "15150": {
+            "cross-listed": ["21128"],
+            "prereq": [["00001"]],
+            "coreq": [],
+            "antireq": ["11111"],
+            "min-grade": []
+        }, 
+        "21128": {
+            "cross-listed": ["15150"],
+            "prereq": [["00001"], ["00003"]],
+            "coreq": [],
+            "antireq": ["11111"],
+            "min-grade": []
+        }
+    }
+}

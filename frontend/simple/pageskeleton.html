@@ -8,28 +8,23 @@
     <!-- <link src="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"> -->
     <link rel="stylesheet" href="style.css">
     <script src="https://kit.fontawesome.com/e7adfd9197.js" crossorigin="anonymous"></script>
-    <title>Document</title>
+    <script src="index.js"></script>  
 
-    <style>
-        div.content {
-            max-width: 100%;
-            border: 1px solid red;
-        }
-    </style>
-
+    <script src="lib/force-graph.js"></script>
+    <script src="lib/3d-force-graph.js"></script>
+    <script src="lib/d3-force.js"></script>
+    <title>Course Path Planner</title>
 </head>
 <body>
+
+    <div id="graph"></div>
+
     <div class="userLogin">
-        <button style="border-radius: 50%;
-        height: 50px;
-        width: 50px;
-        border: none;
-        "><i class="fa-solid fa-user fa-2xl" style="color: #eddbbf"></i> </circle>
+        <button class="loginButton"><i class="fa-solid fa-user fa-2xl" style="color: #eddbbf"></i> </circle>
     </div>
     <div class="split">
         <div class="split top">
             <div class="graph-control">
-                <!-- <label for="search-box" class="search-query">search</label>  -->
                 <i class="fa-solid fa-magnifying-glass fa-xl" style="color: #eddbbf"></i> <input class="search-box" type="text" id="search-box">
                 <button>go</button>
             </div>
@@ -54,13 +49,8 @@
                     <p>Anti-requisite: </p>
                 </div>
                 <div class="highlight-path">
-                    <button style="border-radius: 50%;
-                    height: 30px;
-                    width: 30px;
-                    border: none;
-                    margin-top: 14px;
-                    background-color: #fd8e17
-                    "><i class="fa-regular fa-star fa-lg";></i></button> 
+                    <!-- <button class = "buildGraphBtn" id="buildGraph" onClick="initGraph()"><i class="fa-regular fa-star fa-lg";></i> -->
+                    <!-- </button>  -->
                     <p style="font-size:1.2em;
                     text-align: right;
                     margin-left: 10px

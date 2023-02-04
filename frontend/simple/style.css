@@ -7,6 +7,12 @@ body{
     top: 3vw;
     float: right;
 }
+.loginButton{
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    border: none;
+}
 .split{
     width: 25%;
     height: 85%;
@@ -23,11 +29,6 @@ body{
     bottom: 0;
 }
 .graph-control {
-    /* width: 200px; */
-    /* border: 1px solid blue; */
-    /* Color: 327472(Green) 333230(background grey) Orange: ffd16a
-    */ 
-    /* background-color: rgb(51,50,48); */
     position: absolute;
     float: left;
     top: 1vw;
@@ -82,4 +83,12 @@ input.search-box{
     background-color: #eddbbf;
     display: flex;
     flex-direction: row
+}
+.buildGraphBtn{
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    border: none;
+    margin-top: 14px;
+    background-color: #fd8e17
 }

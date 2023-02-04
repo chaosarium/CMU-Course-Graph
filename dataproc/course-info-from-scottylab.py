@@ -4,12 +4,17 @@ import re
 import requests
 
 
-course_catalog_link = "https://enr-apps.as.cmu.edu/assets/SOC/sched_layout_spring.htm"
-r_coursecatalog = requests.get(course_catalog_link)
-SOURCE_FILE_NAME = "S23-full.txt"
-TARGET_FILE_NAME = "full_list.json"
+course_catalog_link_spring = "https://enr-apps.as.cmu.edu/assets/SOC/sched_layout_spring.htm"
+course_catalog_link_fall = "https://enr-apps.as.cmu.edu/assets/SOC/sched_layout_fall.htm"
+r_coursecatalog_spring = requests.get(course_catalog_link_spring)
+r_coursecatalog_fall = requests.get(course_catalog_link_fall)
+SOURCE_FILE_NAME = "academic-year-full.txt"
+TARGET_FILE_NAME = "academic-year-full_list.json"
 sample_list = ["15-122", "15-112", "80-285", "21-127", "80-100"]
 course_information = {}
+course_list = []
+
+
 
 # dummy method to remove <tags> in html
 def remove_tags(text):
@@ -56,15 +61,15 @@ def write_data_to_file(course_list, data):
             course_key = add_dash(course_key)
         course_info = ['\n']
         course_info.append("key:" + course_key)
-        course_info.append("name:" + data["courses"][course_key]["name"])
-        course_info.append("units:" + str(data["courses"][course_key]["units"]))
-        if data["courses"][course_key]["desc"] != None:
-            course_info.append("desc:" + data["courses"][course_key]["desc"])
+        course_info.append("name:" + data[course_key]["name"])
+        course_info.append("units:" + str(data[course_key]["units"]))
+        if data[course_key]["desc"] != None:
+            course_info.append("desc:" + data[course_key]["desc"])
         else:
             course_info.append("desc:" + "None")
         for keyword in keywords:
-            if data["courses"][course_key][keyword]["reqs_list"] != None:
-                course_info.append(keywords[keyword] + ":" + ",".join(str(entry) for entry in data["courses"][course_key][keyword]["reqs_list"]))
+            if data[course_key][keyword]["reqs_list"] != None:
+                course_info.append(keywords[keyword] + ":" + ",".join(str(entry) for entry in data[course_key][keyword]["reqs_list"]))
             else:
                 course_info.append(keywords[keyword] + ":" + "None")
         f.write("\n".join(course_info))
@@ -123,13 +128,21 @@ def load_data(sample_mode = False, rescrape = False, dash = False):
         else:
             # get course keys from course catalog
             # in 15122 format, with no dash
-            course_list = get_course_code(r_coursecatalog.text, dash = dash)
         # get data from scottylab
-        data = cmu_course_api.get_course_data("S")
+            data = cmu_course_api.get_course_data("S")["courses"] | cmu_course_api.get_course_data("F")["courses"]
+            print(len(data))
+            write_data_to_file(course_list, data)
+
+    course_list_fall = get_course_code(r_coursecatalog_fall.text, dash = dash) 
+    course_list_spring = get_course_code(r_coursecatalog_spring.text, dash = dash) 
+    course_list = list(set(course_list_fall) | set(course_list_spring))
+    print(len(course_list_fall))
+    print(len(course_list_spring))
+    print(len(course_list))
         # export to local file, in gorgeous format, you are welcome :)
-        write_data_to_file(course_list, data)
     # load into Python dictionary
     read_data_from_file()
+    return course_list
 
 # expoort to a json file
 # file name is TARGET_FILE_NAME
@@ -172,35 +185,65 @@ def get_content(text, keyword):
     end += 1
     return eval(text[start: end])
 
+def need_modify(prereqs):
+    flag = True
+    for item in prereqs:
+        if isinstance(item, list):
+            flag = False
+    return flag
+
 def cleaning():
     for course in course_information:
         if course_information[course]["prereq"] != []:
-            course_information[course]["prereq"] = eval(course_information[course]["prereq"])
+            prereqs = eval(course_information[course]["prereq"])
+            if need_modify(prereqs):
+                print(prereqs)
+                course_information[course]["prereq"] = [prereqs]
+            else:
+                course_information[course]["prereq"] = prereqs
         if course_information[course]["coreq"] != []:
             course_information[course]["coreq"] = eval(course_information[course]["coreq"])
             # print(course_information[course]["prereq"])
             
 
 def it_does_fixing():
-    
-    # add crosslisted to course-information
-    with open("full_list with string 9am.json", "r") as read_file:
+    # add crosslisted to course-informatfull_list with string 9am.jsonion
+    with open("academic-year-full_list copy 2.json", "r") as read_file:
         print("Converting JSON encoded data into Python dictionary")
         dict_with_cross = json.load(read_file)
     for key in course_information:
-        content = dict_with_cross[key]["crosslisted"]
+        try:
+            content = dict_with_cross[key]["crosslisted"]
+        except:
+            print(key)
+            dict_with_cross[key]["crosslisted"] = []
+            content = []
         if content == None:
-            course_information[key]["courselisted"] = []
+            course_information[key]["crosslisted"] = []
         else:
-            course_information[key]["courselisted"] = content
+            course_information[key]["crosslisted"] = content
             
 def main():
-    load_data()
-    # add_additional_info(get_course_code(r_coursecatalog.text, dash = True))
-    # get_content(test, "crosslisted")
+
     
+    course_list = load_data(rescrape = False)
+    # add_additional_info(course_list)
+    it_does_fixing()
     cleaning()
     load_to_json()
+    
+    
+    #courses_from_catalog = get_course_code(r_coursecatalog.text, dash = True)
+    #with open("full_list.json", "r") as read_file:
+    #    print("Converting JSON encoded data into Python dictionary")
+    #    course_information_from_scottylab = json.load(read_file)
+    #print("21-128" in course_information_from_scottylab)
+    #print("21-128" in courses_from_catalog)
+    #for code in courses_from_catalog:
+    #    if code not in course_information_from_scottylab:
+    #        print(f"scottylab is missing {code}")
+
+
     print("finished")    
     return 42
 

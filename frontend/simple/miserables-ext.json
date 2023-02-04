@@ -4,7 +4,7 @@
         { "id": "Myriel", "group": 1, "state": "starred"},
         { "id": "Napoleon", "group": 1, "state": "starred"},
         { "id": "Mlle.Baptistine", "group": 1, "state": "starred"},
-        { "id": "Mme.Magloire", "group": 1, "state": "starred"},
+        { "id": "Mme.Magloire", "group": 1, "state": "starred", "links": ["Myriel"]},
         { "id": "CountessdeLo", "group": 1, "state": "starred"},
         { "id": "Geborand", "group": 1, "state": "starred"},
         { "id": "Champtercier", "group": 1, "state": "starred"},

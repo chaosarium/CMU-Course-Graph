@@ -88,48 +88,54 @@ async function initGraph() {
   })
   .nodeCanvasObjectMode(() => 'after')
   // HACK draw text?
-  // .nodeCanvasObject((node, ctx, globalScale) => {
-  //   // draw text only for nodes connected to the current node
-  //   let isConnected = false;
-  //   node.links.forEach(link => {
-  //       if (link == g.current_node_id){
-  //           isConnected = true;
-  //       }
-  //   })
-  //   // draw text
-  //   if (isConnected){
-  //       const label = node.name;
-  //       const fontSize = 11 / globalScale;
-  //       ctx.font = `${fontSize}px Sans-Serif`;
-  //       const textWidth = ctx.measureText(label).width;                
-  //       ctx.textAlign = 'center';
-  //       ctx.textBaseline = 'middle';
-  //       ctx.fillStyle = g.colors.text;
-  //       ctx.fillText(label, node.x, node.y+8);
-  //   }
+  .nodeCanvasObject((node, ctx, globalScale) => {
+    // draw text only for nodes connected to the current node
+    let isConnected = false;
+    if (node.id == g.current_node_id) {
+      isConnected = true;
+    }
+    // loop through links to see if any connect to current
+    if (node.links) {
+      node.links.forEach(link => {
+          if (link == g.current_node_id){
+              isConnected = true;
+          }
+      })
+    }
+    // draw text
+    if (isConnected){
+        const label = node.id; // HACK will be name
+        const fontSize = 11 / globalScale;
+        ctx.font = `${fontSize}px Sans-Serif`;
+        const textWidth = ctx.measureText(label).width;                
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = '#123';
+        ctx.fillText(label, node.x, node.y+8);
+    }
     
-  //   // color only main node & semiconnected
-  //   if (node.id != g.current_node_id){
-  //       if (isConnected){
-  //           ctx.beginPath();
-  //           ctx.arc(node.x, node.y, 4, 0, 2 * Math.PI);
-  //           ctx.fillStyle = g.colors.node_semiactive;
-  //           ctx.fill();
-  //       }
-  //       return
-  //   }
+    // color only main node & semiconnected
+    if (node.id != g.current_node_id){
+        if (isConnected){
+            ctx.beginPath();
+            ctx.arc(node.x, node.y, 4, 0, 2 * Math.PI);
+            ctx.fillStyle = 'pink';
+            ctx.fill();
+        }
+        return
+    }
 
-  //   // color node
-  //   ctx.beginPath();
-  //   ctx.arc(node.x, node.y, 4+1, 0, 2 * Math.PI);
-  //   ctx.fillStyle = g.colors.node_active_border;
-  //   ctx.fill();
-  //   ctx.beginPath();
-  //   ctx.arc(node.x, node.y, 4, 0, 2 * Math.PI);
-  //   ctx.fillStyle = g.colors.node_active;
-  //   ctx.fill();
+    // color node
+    ctx.beginPath();
+    ctx.arc(node.x, node.y, 4+1, 0, 2 * Math.PI);
+    ctx.fillStyle = "#red"; // active border
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(node.x, node.y, 4, 0, 2 * Math.PI);
+    ctx.fillStyle = "#cyan"; // active fill
+    ctx.fill();
 
-  // })
+  })
   .linkColor(link => {
     if (link.source.id == g.current_node_id || link.target.id == g.current_node_id){
         return 'red'

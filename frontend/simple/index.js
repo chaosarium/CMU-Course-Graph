@@ -153,7 +153,8 @@ async function testParse() {
 function save_user_data() {
   if (g.course_list != undefined) {
     console.log(JSON.stringify(g.course_list))
-    return ls_set('course_list', JSON.stringify(g.course_list));
+    ls_set('course_list', JSON.stringify(g.course_list));
+    update_course_states()
   } else {
     console.warn('nothing to save')
   }
@@ -191,6 +192,8 @@ function handle_course_state_toggle(course_code, new_state) {
   }
   if (new_state == g.course_list[course_code]) {
     delete g.course_list[course_code]
+    save_user_data()
+    return 
   }
   g.course_list[course_code] = new_state
   save_user_data()
@@ -198,6 +201,24 @@ function handle_course_state_toggle(course_code, new_state) {
 
 function update_course_states() {
   // TODO updates g.data using g.course_list
+  for (const course in g.course_list) {
+    console.info("updating", course, g.course_list[course]);
+    if (g.data?.list.includes(course)) {
+      console.info("real course");
+
+      
+      for(i in g.data?.nodes){
+        node = g.data?.nodes[i]
+        // console.info(node)
+        if(node.id == course) {
+          console.info("found course node", node);
+          node.state = g.course_list[course]
+        }
+      }
+
+
+    }
+  }
   return
 }
 
@@ -362,10 +383,10 @@ async function initGraph() {
       if (node.state == "taken") {
         return "green";
       }
-      if (node.state == "starred") {
+      if (node.state == "star") {
         return "orange";
       }
-      if (node.state == "gaol") {
+      if (node.state == "plan") {
         return "red";
       }
       return "grey";
@@ -466,7 +487,8 @@ async function initGraph() {
     .onNodeHover(null);
 
   g.Graph = Graph;
+  load_user_data();
+  update_course_states()
 }
 
 initGraph();
-load_user_data();

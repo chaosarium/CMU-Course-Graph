@@ -7,41 +7,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Testing</title>
 
+  <!-- force libraries -->
   <script src="lib/force-graph.js"></script>
+  <script src="lib/d3-force.js"></script>
+
+  <!-- everything in there -->
+  <script src="index.js"></script>
+
+  <!-- for processing course data -->
+  <script src="course-data.js"></script>
+
+  <!-- for saving, retriving user data -->
+  <script src="data-helper.js"></script>
+
+  <!-- for drawing graph -->
+  <script src="graph.js"></script>
   
 </head>
 
 <body>
+
   <div id="graph"></div>
-
-  <script>
-    async function fetchDataJson() {
-      const response = await fetch('miserables.json');
-      const data = await response.json();
-      return data;
-    }
-
-    let data
-
-    async function initGraph() {  
-         
-      data = await fetchDataJson()
-      console.log(data)
-    
-      const Graph = ForceGraph()
-        (document.getElementById('graph'))
-        .graphData(data)
-        .nodeId('id')
-        .nodeVal('val')
-        .nodeLabel('id')
-        .nodeAutoColorBy('group')
-        .linkSource('source')
-        .linkTarget('target')
-
-    }
-
-    initGraph()
-
-  </script>
 
 </body>

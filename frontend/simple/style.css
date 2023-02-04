@@ -1,0 +1,85 @@
+body{
+    background-color: rgb(51,50,48); 
+}
+.userLogin{
+    position:absolute;
+    right: 10vw;
+    top: 3vw;
+    float: right;
+}
+.split{
+    width: 25%;
+    height: 85%;
+    position: fixed;
+    left: 20px;
+    float: left;
+    color: rgb(51,50,48);
+}
+.top{
+    top: 0;
+}
+
+.bottom{
+    bottom: 0;
+}
+.graph-control {
+    /* width: 200px; */
+    /* border: 1px solid blue; */
+    /* Color: 327472(Green) 333230(background grey) Orange: ffd16a
+    */ 
+    /* background-color: rgb(51,50,48); */
+    position: absolute;
+    float: left;
+    top: 1vw;
+    overflow: auto;
+}
+input.search-box{
+    background-color: #eddbbf;
+    color: rgb(51,50,48);
+    border: none;
+    padding: 0.5em;
+    margin: 1em 1em 1em 0.5em;
+}
+.course-detail{
+    display: flex;
+    flex-direction: column;
+    float: left;
+}
+.course-overview{
+    text-align: left;
+    word-break: break;
+    font-size: 1.5em;
+    background-color: #eddbbf;
+    padding: 15px;
+    margin-bottom: 0.5em;
+}
+.course-logistics{
+    /* margin-top: 5px; */
+    border: 1em;
+    font-size:1.2em;
+    line-height:1;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 15px;
+    background-color: #eddbbf;
+    margin-bottom: 0.5em;
+}
+.course-details{
+    font-size:1.2em;
+    line-height:1;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 15px;
+    background-color: #eddbbf;
+    margin-bottom: 0.5em;
+}
+.highlight-path{
+    border: 1em;
+    line-height:1;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    background-color: #eddbbf;
+    display: flex;
+    flex-direction: row
+}

@@ -61,6 +61,26 @@ button {
     all: unset
 }
 
+.button-group {
+    display: flex;
+    gap: var(--gap);
+    justify-content: flex-start;
+    align-items: center;
+    position: sticky;
+    top: 0;
+}
+
+.button-group button {
+    display: flex;
+    background-color: #e0d2bb;
+    padding: 10px;
+    border-radius: var(--radius);
+}
+
+.button-group button i {
+    margin-right: 4px;
+}
+
 .search {
     display: flex;
     gap: var(--gap);
@@ -73,7 +93,6 @@ button {
 .search input {
     flex-grow: 2;
 }
-
 
 i::before {
     color: rgb(255, 62, 62);

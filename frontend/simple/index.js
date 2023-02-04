@@ -2,7 +2,8 @@
 
 // global
 let g = {};
-g.current_node_id = "Myriel";
+g.current_node_id = "Myriel"
+g.course_list = {}
 
 async function fetchDataJson(json_path) {
   const response = await fetch(json_path);
@@ -141,19 +142,72 @@ async function testParse() {
 
 // ========== for saving, retriving user data ==========
 
+// userdata shall look like {"courseNum": "state"}
+// datatype state = taken | star | plan
+
 function save_user_data() {
-  // TODO
-  return true;
+  if (g.course_list != undefined) {
+    console.log(JSON.stringify(g.course_list))
+    return ls_set('course_list', JSON.stringify(g.course_list));
+  } else {
+    console.warn('nothing to save')
+  }
 }
 
 function load_user_data() {
-  // TODO
-  return {};
+  let data = ls_get('course_list')
+  if (data) {
+    g.course_list = JSON.parse(data)
+    console.info('loaded data')
+    
+    // TODO update g.data to update graph
+
+
+    return data
+  } else {
+    data = {}
+    g.course_list = data
+    save_user_data()
+    console.info('made new data')
+    return data
+  }
 }
 
 function clear_data() {
   // TODO
   return;
+}
+
+// global cache
+var cacheAvailable = null;
+
+// local storage stuff
+function ls_test_available() {
+    if (cacheAvailable != null) {
+        return cacheAvailable
+    }
+    try {
+        window.localStorage.setItem('testVal', 'testVal');
+        window.localStorage.removeItem('testVal');
+        cacheAvailable = true;
+        return true;
+    } catch (e) {
+        cacheAvailable = false;
+        return false;
+    }
+}
+
+function ls_get(key) {
+    if (ls_test_available() == false) {
+        return false
+    }
+    return window.localStorage.getItem(key);
+}
+function ls_set(key, value) {
+    if (ls_test_available() == false) {
+        return false
+    }
+    return window.localStorage.setItem(key, value);
 }
 
 // ========== for manipulating data ==========

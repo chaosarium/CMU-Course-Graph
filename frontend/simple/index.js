@@ -12,9 +12,118 @@ async function fetchDataJson(json_path) {
 
 // ========== for processing course data ==========
 
-function from_schema(raw) {
-  // TODO return data format for force graph
+function graph_from_schema(raw) {
+
+  let data = {}
+  data.list = [] // list of all courses
+  data.nodes = [] // list of course objs
+  // with id, name, links, desc, unit, prereq, coreq, antireq, min-grade
+  data.links = [] // list of link objs
+  // with source, target, link type
+
+  // 1st pass: build list and nodes
+  for (const [code, course] of Object.entries(raw)) {
+    data.list.push(code)
+    data.nodes.push({
+      'id': code,
+      'plain-name': course.name,
+      'name': code + ' ' + course.name,
+      'links': [], 
+      'desc': course.desc, 
+      'unit': course.unit, 
+      'prereq': course.prereq, 
+      'coreq': course.coreq,  
+      'antireq': course.antireq, 
+      'min-grade': course['min-grade'],
+    })
+  }
+  console.log('DONE FIRST PASS');
+  console.log(data);
+  
+  // 2nd pass: build link index
+  for (node of data.nodes) {
+    // add all prereq to links and links
+    if (node.prereq != []) {
+      for (p of node.prereq) {
+        // p is array of ORS
+        if (typeof(p) == 'object') {
+          for (course of p) {
+            node.links.push(course)
+            data.links.push({
+              "source": node.id,
+              "target": course,
+              "value": 1,
+              "type": "one_of_prereq",
+              "rest_of_prereq_in_group": p,
+            })
+          }
+        }
+        // p is single element
+        if (typeof(p) == 'string') {
+          course = p
+          node.links.push(course)
+          data.links.push({
+            "source": node.id,
+            "target": course,
+            "value": 1,
+            "type": "prereq"
+          })
+        }
+      }
+    }
+    if (node.coreq != []) {
+      for (c of node.coreq) {
+        // c is array of ORS
+        if (typeof(c) == 'object') {
+          for (course of c) {
+            node.links.push(course)
+            data.links.push({
+              "source": node.id,
+              "target": course,
+              "value": 1,
+              "type": "one_of_coreq",
+              "rest_of_coreq_in_group": c,
+            })
+          }
+        }
+        // p is single element
+        if (typeof(p) == 'string') {
+          course = p
+          node.links.push(course)
+          data.links.push({
+            "source": node.id,
+            "target": course,
+            "value": 1,
+            "type": "coreq"
+          })
+        }
+      }
+    } if (node.prereq != []) {
+      for (a of node.antireq) {
+        course = a
+        node.links.push(course)
+        data.links.push({
+          "source": node.id,
+          "target": course,
+          "value": 1,
+          "type": "antireq"
+        })
+      }
+    }
+    // TODO cross listing
+  }
+  console.log('DONE SECOND PASS');
+  console.log(data);
+  return data
 }
+
+async function testParse() {
+  console.log('PARSING')
+  let raw = await fetchDataJson('../../../dataproc/full_list.json')
+  console.log(raw)
+  graph_from_schema(raw)
+}
+// testParse()
 
 // ========== for saving, retriving user data ==========
 
@@ -77,8 +186,11 @@ function zoom_select(node) {
 // ========== for drawing graph ==========
 
 async function initGraph() {
-  g.data = await fetchDataJson("miserables-ext.json");
-  console.log(g.data);
+  let raw = await fetchDataJson('../../../dataproc/full_list.json')
+
+  g.data = graph_from_schema(raw)
+  // g.data = await fetchDataJson("miserables-ext.json");
+  // console.log(g.data);
 
   // 2D graph
   Graph = ForceGraph()(document.getElementById("graph"))

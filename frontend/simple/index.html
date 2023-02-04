@@ -11,7 +11,14 @@
   <script src="lib/force-graph.js"></script>
   <script src="lib/3d-force-graph.js"></script>
   <script src="lib/d3-force.js"></script>
-
+  <script>
+    function handle(e){
+      if(e.code===13){
+        e.preventDefault();
+        search_course();
+      }
+    }
+  </script>
   <!-- css -->
   <link rel="stylesheet" href="style.css">
   <script src="https://kit.fontawesome.com/e7adfd9197.js" crossorigin="anonymous"></script>
@@ -41,8 +48,14 @@
   <div class="split">
       <div class="split top">
           <div class="graph-control">
-              <i class="fa-solid fa-magnifying-glass fa-xl" style="color: #eddbbf"></i> <input class="search-box" type="text" id="search-box">
-              <button onclick="search_course()">go</button>
+              <i class="fa-solid fa-magnifying-glass fa-xl" style="color: #eddbbf">
+              </i> <input class="search-box" type="text" id="search-box" onkeypress="enterKeyPressed(event)" />
+              <script>
+                function enterKeyPressed(event){
+                  if (event.keyCode===13) search_course() 
+                }
+              </script>
+              <button onClick="search_course()">go</button>
           </div>
       </div>
       <div class="split bottom">

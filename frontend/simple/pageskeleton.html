@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="https://kit.fontawesome.com/e7adfd9197.css" crossorigin="anonymous"> -->
+    <!-- <link src="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/e7adfd9197.js" crossorigin="anonymous"></script>
     <title>Document</title>
 
     <style>
@@ -11,46 +15,60 @@
             max-width: 100%;
             border: 1px solid red;
         }
-        div.graph-control {
-            width: 200px;
-            border: 1px solid blue;
-            background-color: white;
-            position: absolute;
-            right: 20px;
-            top: 20px;
-            padding: 0;
-            overflow: auto;
-        }
     </style>
 
 </head>
 <body>
-
-    <div class="content">
-
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis, quaerat, eligendi vel placeat, ab explicabo accusamus eaque esse modi culpa exercitationem dolores? Eligendi dolores deleniti accusamus facere provident maxime inventore!</p>
-
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad iste reiciendis deleniti. Reiciendis adipisci commodi, sapiente officia, sit rerum nisi repellendus nemo distinctio atque quaerat consequatur! Dignissimos beatae nesciunt cumque iste similique facilis exercitationem suscipit, fugit nostrum pariatur blanditiis amet?</p>
-    
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat iste assumenda quos! Minus sapiente repudiandae at laudantium molestiae distinctio? Exercitationem et, labore consectetur itaque amet blanditiis alias. Saepe, aut placeat ipsam tempora laboriosam a tenetur debitis corporis cum reprehenderit aspernatur neque ut odit dolore inventore molestias sapiente quaerat assumenda molestiae?</p>
-    
+    <div class="userLogin">
+        <button style="border-radius: 50%;
+        height: 50px;
+        width: 50px;
+        border: none;
+        "><i class="fa-solid fa-user fa-2xl" style="color: #eddbbf"></i> </circle>
     </div>
-
-    <div class="graph-control">
-
-        <label for="search-box">search</label>
-        <input type="text" id="search-box"> <button>go</button>
-
-        <br>
-
-        <input type="text">
-        <br>
-        <input type="button" value="">
-        <br>
-        <input type="text">
-
+    <div class="split">
+        <div class="split top">
+            <div class="graph-control">
+                <!-- <label for="search-box" class="search-query">search</label>  -->
+                <i class="fa-solid fa-magnifying-glass fa-xl" style="color: #eddbbf"></i> <input class="search-box" type="text" id="search-box">
+                <button>go</button>
+            </div>
+        </div>
+        <div class="split bottom">
+            <div class="course-detail">
+                <div class="course-overview">
+                    Great ideas in Theoretical Computer Science
+                    <div>
+                        15-251
+                    </div>
+                </div> 
+                <div class="course-logistics">
+                    <p>Department: </p>
+                    <p>Units:</p>
+                    <p>Professor:</p>
+                    <p>URL:</p> 
+                </div> 
+                <div class="course-details">
+                    <p>Pre-requisite: </p>
+                    <p>Co-requisite: </p>
+                    <p>Anti-requisite: </p>
+                </div>
+                <div class="highlight-path">
+                    <button style="border-radius: 50%;
+                    height: 30px;
+                    width: 30px;
+                    border: none;
+                    margin-top: 14px;
+                    background-color: #fd8e17
+                    "><i class="fa-regular fa-star fa-lg";></i></button> 
+                    <p style="font-size:1.2em;
+                    text-align: right;
+                    margin-left: 10px
+                    ">Build my own path</p>
+                </div>
+            </div>
+        </div>
     </div>
-    
 
 </body>
 </html>

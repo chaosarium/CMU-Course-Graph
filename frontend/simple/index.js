@@ -283,7 +283,6 @@ function search_course() {
   let dash = query.indexOf('-')
   if (dash===-1){query = query.slice(0,2) + '-' + query.slice(2)}
   if (!g.data.list.includes(query)) {
-    console.log(query, 'course not found')
     error("no such course");
     return;
   }
@@ -297,18 +296,23 @@ function go_to_node(course_code) {
 
 // ========== UI update ==========
 
+
 function createRequistes(someRequites){
   result = ""
+  console.log(someRequites,someRequites.length)
   if (someRequites.length===0) return ""
   else{
     for(i=0;i<someRequites.length;i++){
       item = someRequites[i]
-      if (item instanceof Array){
-        result += "(" + item.join(' or ') + ") "
-      }
-      else {
-        result += item
-      }
+      if (item.length===1) result += item[0]
+      else result += "(" + item.join(' or ') + ") "
+      // console.log('item',item)
+      // if (item instanceof Array){
+      //   result += "(" + item.join(' or ') + ") "
+      // }
+      // else {
+      //   result += item
+      // }
       if (i!==someRequites.length-1) result += ' and '
     }
   }
@@ -318,7 +322,7 @@ function createRequistes(someRequites){
 function update_course_info_pane(course_code) {
   course = g.raw[course_code]
   prereq = createRequistes(course.prereq)
-  coreq = createRequistes(course.coreq)
+  coreq = course.coreq.join(' , ')
   antireq = createRequistes(course.antireq)
 
   $('#course-name-show').text(course.name)

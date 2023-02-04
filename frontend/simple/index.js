@@ -40,6 +40,10 @@ function graph_from_schema(raw) {
   console.log('DONE FIRST PASS');
   console.log(data);
   
+  function handle_req_list(reqs, req_type) {
+
+  }
+
   // 2nd pass: build link index
   for (node of data.nodes) {
     // add all prereq to links and links
@@ -48,26 +52,30 @@ function graph_from_schema(raw) {
         // p is array of ORS
         if (typeof(p) == 'object') {
           for (course of p) {
-            node.links.push(course)
-            data.links.push({
-              "source": node.id,
-              "target": course,
-              "value": 1,
-              "type": "one_of_prereq",
-              "rest_of_prereq_in_group": p,
-            })
+            if (data.list.includes(course)) {
+              node.links.push(course)
+              data.links.push({
+                "source": node.id,
+                "target": course,
+                "value": 1,
+                "type": "one_of_prereq",
+                "rest_of_prereq_in_group": p,
+              })
+            }
           }
         }
         // p is single element
         if (typeof(p) == 'string') {
           course = p
-          node.links.push(course)
-          data.links.push({
-            "source": node.id,
-            "target": course,
-            "value": 1,
-            "type": "prereq"
-          })
+          if (!data.list.includes(course)) {
+            node.links.push(course)
+            data.links.push({
+              "source": node.id,
+              "target": course,
+              "value": 1,
+              "type": "prereq"
+            })
+          }
         }
       }
     }
@@ -76,38 +84,44 @@ function graph_from_schema(raw) {
         // c is array of ORS
         if (typeof(c) == 'object') {
           for (course of c) {
-            node.links.push(course)
-            data.links.push({
-              "source": node.id,
-              "target": course,
-              "value": 1,
-              "type": "one_of_coreq",
-              "rest_of_coreq_in_group": c,
-            })
+            if (data.list.includes(course)) {
+              node.links.push(course)
+              data.links.push({
+                "source": node.id,
+                "target": course,
+                "value": 1,
+                "type": "one_of_coreq",
+                "rest_of_coreq_in_group": c,
+              })
+            }
           }
         }
         // p is single element
         if (typeof(p) == 'string') {
           course = p
+          if (data.list.includes(course)) {
+            node.links.push(course)
+            data.links.push({
+              "source": node.id,
+              "target": course,
+              "value": 1,
+              "type": "coreq"
+            })
+          }
+        }
+      }
+    } if (node.antireq != []) {
+      for (a of node.antireq) {
+        course = a
+        if (data.list.includes(course)) {
           node.links.push(course)
           data.links.push({
             "source": node.id,
             "target": course,
             "value": 1,
-            "type": "coreq"
+            "type": "antireq"
           })
         }
-      }
-    } if (node.prereq != []) {
-      for (a of node.antireq) {
-        course = a
-        node.links.push(course)
-        data.links.push({
-          "source": node.id,
-          "target": course,
-          "value": 1,
-          "type": "antireq"
-        })
       }
     }
     // TODO cross listing

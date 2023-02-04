@@ -178,6 +178,19 @@ function clear_data() {
   return;
 }
 
+function handle_course_state_toggle(course_code, new_state) {
+  if (new_state == "null" || new_state == null) {
+    return
+  }
+
+  g.course_list[course_code] = new_state
+  save_user_data()
+}
+
+function update_course_states() {
+  // updates g.data using g.course_list
+}
+
 // global cache
 var cacheAvailable = null;
 
@@ -422,3 +435,4 @@ async function initGraph() {
 }
 
 initGraph();
+load_user_data();

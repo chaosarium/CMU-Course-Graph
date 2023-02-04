@@ -101,21 +101,34 @@ button {
     flex-grow: 2;
 }
 
-i::before {
+.search i::before {
     color: rgb(255, 62, 62);
     fill: rgb(255, 65, 65);
+}
+
+.search i::before {
     font-size: 1.5em;
 }
 
+p {
+    margin: 0;
+}
+
+h1 {
+    margin-top: 0.2em;
+}
 
 #taken-button.active {
-    background-color: #6fb7a2;
+    background-color: #43b291;
+    color: white;
 }
 #star-button.active {
-    background-color: orange;
+    background-color: rgb(226, 177, 64);
+    color: white;
 }
 #plan-button.active {
-    background-color: #d8df6e;
+    background-color: #55abda;
+    color: white;
 }
 
 details {

@@ -24,8 +24,8 @@ async function fetchDataJson(json_path) {
   return data;
 }
 
-function enterKeyPressed(event){
-  if (event.keyCode===13) search_course() 
+function enterKeyPressed(event) {
+  if (event.keyCode === 13) search_course()
 }
 
 
@@ -62,18 +62,18 @@ function graph_from_schema(raw) {
       'id': code,
       'plain-name': course.name,
       'name': code + ' ' + course.name,
-      'links': [], 
-      'desc': course.desc, 
-      'units': course.units, 
-      'prereq': course.prereq, 
-      'coreq': course.coreq,  
-      'antireq': course.antireq, 
+      'links': [],
+      'desc': course.desc,
+      'units': course.units,
+      'prereq': course.prereq,
+      'coreq': course.coreq,
+      'antireq': course.antireq,
       'min-grade': course['min-grade'],
     })
   }
   console.log('DONE FIRST PASS');
   console.log(data);
-  
+
   function handle_req_list(reqs, req_type) {
 
   }
@@ -84,7 +84,7 @@ function graph_from_schema(raw) {
     if (node.prereq != []) {
       for (p of node.prereq) {
         // p is array of ORS
-        if (typeof(p) == 'object') {
+        if (typeof (p) == 'object') {
           for (course of p) {
             if (data.list.includes(course)) {
               node.links.push(course)
@@ -101,7 +101,7 @@ function graph_from_schema(raw) {
           }
         }
         // p is single element
-        if (typeof(p) == 'string') {
+        if (typeof (p) == 'string') {
           course = p
           if (data.list.includes(course)) {
             node.links.push(course)
@@ -119,7 +119,7 @@ function graph_from_schema(raw) {
     if (node.coreq != []) {
       for (c of node.coreq) {
         // c is array of ORS
-        if (typeof(c) == 'object') {
+        if (typeof (c) == 'object') {
           for (course of c) {
             if (data.list.includes(course)) {
               node.links.push(course)
@@ -135,7 +135,7 @@ function graph_from_schema(raw) {
           }
         }
         // p is single element
-        if (typeof(p) == 'string') {
+        if (typeof (p) == 'string') {
           course = p
           if (data.list.includes(course)) {
             node.links.push(course)
@@ -201,7 +201,7 @@ function load_user_data() {
   if (data) {
     g.course_list = JSON.parse(data)
     console.info('loaded data')
-    
+
     update_course_states()
 
     return data
@@ -224,14 +224,41 @@ function handle_course_state_toggle(course_code, new_state) {
     return
   }
   if (new_state == "null" || new_state == null) {
+    $("#taken-button").removeClass("active")
+    $("#star-button").removeClass('active')
+    $("#plan-button").removeClass('active')
     return
   }
   if (new_state == g.course_list[course_code]) {
+    $("#taken-button").removeClass("active")
+    $("#star-button").removeClass('active')
+    $("#plan-button").removeClass('active')
     delete g.course_list[course_code]
     save_user_data()
-    return 
+    return
   }
   g.course_list[course_code] = new_state
+  if (new_state == 'taken') {
+    $("#taken-button").removeClass("active")
+    $("#star-button").removeClass('active')
+    $("#plan-button").removeClass('active')
+
+    $("#taken-button").addClass("active") 
+  }
+  if (new_state == 'star') { 
+    $("#taken-button").removeClass("active")
+    $("#star-button").removeClass('active')
+    $("#plan-button").removeClass('active')
+
+    $("#star-button").addClass('active') 
+  }
+  if (new_state == 'plan') {
+    $("#taken-button").removeClass("active")
+    $("#star-button").removeClass('active')
+    $("#plan-button").removeClass('active')
+
+    $("#plan-button").addClass('active') 
+  }
   save_user_data()
 }
 
@@ -241,10 +268,10 @@ function update_course_states() {
     if (g.data?.list.includes(course)) {
       //console.info("real course");
 
-      for(i in g.data?.nodes){
+      for (i in g.data?.nodes) {
         node = g.data?.nodes[i]
         // console.info(node)
-        if(node.id == course) {
+        if (node.id == course) {
           //console.info("found course node", node);
           node.state = g.course_list[course]
         }
@@ -260,31 +287,31 @@ var cacheAvailable = null;
 
 // local storage stuff
 function ls_test_available() {
-    if (cacheAvailable != null) {
-        return cacheAvailable
-    }
-    try {
-        window.localStorage.setItem('testVal', 'testVal');
-        window.localStorage.removeItem('testVal');
-        cacheAvailable = true;
-        return true;
-    } catch (e) {
-        cacheAvailable = false;
-        return false;
-    }
+  if (cacheAvailable != null) {
+    return cacheAvailable
+  }
+  try {
+    window.localStorage.setItem('testVal', 'testVal');
+    window.localStorage.removeItem('testVal');
+    cacheAvailable = true;
+    return true;
+  } catch (e) {
+    cacheAvailable = false;
+    return false;
+  }
 }
 
 function ls_get(key) {
-    if (ls_test_available() == false) {
-        return false
-    }
-    return window.localStorage.getItem(key);
+  if (ls_test_available() == false) {
+    return false
+  }
+  return window.localStorage.getItem(key);
 }
 function ls_set(key, value) {
-    if (ls_test_available() == false) {
-        return false
-    }
-    return window.localStorage.setItem(key, value);
+  if (ls_test_available() == false) {
+    return false
+  }
+  return window.localStorage.setItem(key, value);
 }
 
 // ========== for manipulating data ==========
@@ -340,7 +367,7 @@ function search_course() {
   console.log("searching course");
   let query = $('#search-box').val()
   let dash = query.indexOf('-')
-  if (dash===-1){query = query.slice(0,2) + '-' + query.slice(2)}
+  if (dash === -1) { query = query.slice(0, 2) + '-' + query.slice(2) }
   console.log(query)
   if (!g.data.list.includes(query)) {
     error("no such course");
@@ -357,18 +384,18 @@ function go_to_node(course_code) {
 // ========== UI update ==========
 
 
-function createRequistes(someRequites){
+function createRequistes(someRequites) {
   result = ""
-  console.log(someRequites,someRequites.length)
-  if (someRequites.length===0) return ""
-  else{
-    for(i=0;i<someRequites.length;i++){
+  console.log(someRequites, someRequites.length)
+  if (someRequites.length === 0) return ""
+  else {
+    for (i = 0; i < someRequites.length; i++) {
       item = someRequites[i]
-      if (item.length===1) {result = result + item[0]}
+      if (item.length === 1) { result = result + item[0] }
       else {
         result = result + "(" + item.join(" or ") + ") "
       }
-      if (i!==someRequites.length-1) {result = result + ' and '}
+      if (i !== someRequites.length - 1) { result = result + ' and ' }
     }
   }
   console.log(result);
@@ -389,18 +416,21 @@ function update_course_info_pane(course_code) {
   $('#coreq-show').text(coreq)
   $('#antireq-show').text(antireq)
 
-  if (course_code in g.course_list) {
-    let action = g.course_list[course_code]
-    if (action==='taken') {$("#taken-button").addClass("active")}
-    else if(action==='star') {$("#star-button").addClass('active')}
-    else {$("#plan-button").addClass('active')}
+  $("#taken-button").removeClass("active")
+  $("#star-button").removeClass('active')
+  $("#plan-button").removeClass('active')
+
+  let action = g.course_list[course_code]
+  console.log("current node is", action)
+
+  if (action == 'taken') {
+    $("#taken-button").addClass("active") 
   }
-  
-  else{
-    console.log('remove active')
-    $("#taken-button").removeClass("active")
-    $("#star-button").removeClass('active')
-    $("#plan-button").removeClass('active')
+  if (action == 'star') { 
+    $("#star-button").addClass('active') 
+  }
+  if (action == 'plan') { 
+    $("#plan-button").addClass('active') 
   }
 
   $('#has-info-info').removeClass('d-none')

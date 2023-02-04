@@ -6,12 +6,12 @@ g.current_node_id = null
 g.course_list = {}
 g.current_mode = '2d'
 g.color = {
-  current_node: '#ffd16a',
+  current_node: '#ffd169',
   neighbors: '#f2d091',
   particle: '#ffd16a',
-  taken: "#327472",
-  star: "#ff8f07",
-  plan: "#769af5",
+  taken: "#6fb7a2",
+  star: "#ec8b3b",
+  plan: "#cf4d8f",
   default_node: "#999999",
   current_node_outline: "#fff",
   link_active: "#f2d091", // around active node
@@ -453,7 +453,7 @@ async function initGraph() {
     .graphData(g.data)
     .nodeId("id")
     .nodeVal("val")
-    .backgroundColor("#444")
+    .backgroundColor("#333")
     .nodeLabel("name")
     .d3Force("charge", d3.forceManyBody().strength(-10).theta(0.9).distanceMax(600))
     // .d3Force("link", d3.forceLink())

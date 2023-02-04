@@ -128,15 +128,15 @@ h1 {
 }
 
 #taken-button.active {
-    background-color: #43b291;
+    background-color: #67ae99;
     color: white;
 }
 #star-button.active {
-    background-color: rgb(226, 177, 64);
+    background-color: #ec8b3b;
     color: white;
 }
 #plan-button.active {
-    background-color: #55abda;
+    background-color: #cf4d8f;
     color: white;
 }
 

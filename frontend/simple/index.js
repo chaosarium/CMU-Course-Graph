@@ -237,7 +237,7 @@ function update_course_info_pane(course_code) {
 // ========== for drawing graph ==========
 
 async function initGraph() {
-  let raw = await fetchDataJson('../../../dataproc/full_list.json')
+  let raw = await fetchDataJson('data/full_list.json')
   g.raw = raw
 
   g.data = graph_from_schema(raw)

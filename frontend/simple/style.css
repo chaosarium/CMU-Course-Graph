@@ -41,6 +41,15 @@ p {
     overflow: auto;
 }
 
+.toggle2d3d {
+    background-color: #eddbbf;
+    padding: var(--gap);
+    border-radius: var(--radius);
+    border: 2px solid rgba(255, 167, 167, 0.574);
+    margin-bottom: var(--gap);
+    width: 50px;
+}
+
 .info-module {
     background-color: #eddbbf;
     padding: var(--gap);
@@ -52,7 +61,7 @@ p {
 
 input {
     all: unset;
-    background-color: rgb(223, 200, 171);
+    background-color: rgb(233, 212, 186);
     border-radius: var(--radius);
     height: 32px;
     box-sizing: border-box;
@@ -60,7 +69,7 @@ input {
 }
 
 input:focus {
-    background-color: rgb(206, 182, 153);
+    background-color: rgb(225, 205, 179);
     
 }
 
@@ -141,4 +150,13 @@ details summary {
 
 .d-none {
     display: none;
+}
+
+#toggledim {
+    display: flex;
+    background-color: #e0d2bb;
+    padding: 10px;
+    margin: -10px;
+    border-radius: var(--radius);
+    
 }

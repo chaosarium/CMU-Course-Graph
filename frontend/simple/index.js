@@ -4,6 +4,7 @@
 let g = {};
 g.current_node_id = null
 g.course_list = {}
+g.current_mode = '2d'
 g.color = {
   current_node: '#ffd16a',
   neighbors: '#f2d091',
@@ -452,7 +453,7 @@ async function initGraph() {
     .graphData(g.data)
     .nodeId("id")
     .nodeVal("val")
-    .backgroundColor("var(--graph-background)")
+    .backgroundColor("#444")
     .nodeLabel("name")
     .d3Force("charge", d3.forceManyBody().strength(-10).theta(0.9).distanceMax(600))
     // .d3Force("link", d3.forceLink())
@@ -589,6 +590,176 @@ async function initGraph() {
   g.Graph = Graph;
   load_user_data();
   update_course_states()
+}
+
+async function initGraph2() {
+  let raw = await fetchDataJson('data/full_list.json')
+  g.raw = raw
+
+  g.data = graph_from_schema(raw)
+  // g.data = await fetchDataJson("miserables-ext.json");
+  // console.log(g.data);
+
+  // 3D graph
+  Graph = ForceGraph3D()(document.getElementById("graph"))
+    .graphData(g.data)
+    .nodeId("id")
+    .nodeVal("val")
+    // .backgroundColor("var(--graph-background)")
+    .nodeLabel("name")
+    // .d3Force("charge", d3.forceManyBody().strength(-10).theta(0.9).distanceMax(600))
+    // // .d3Force("link", d3.forceLink())
+    // .d3Force("center", d3.forceCenter(0.05))
+    // .nodeRelSize(4)
+    .nodeColor((node) => {
+      if (node.id == g.current_node_id) {
+        return g.color.current_node;
+      }
+      if (node.state == "taken") {
+        return g.color.taken;
+      }
+      if (node.state == "star") {
+        return g.color.star;
+      }
+      if (node.state == "plan") {
+        return g.color.plan;
+      }
+      return g.color.default_node;
+    })
+    // .nodeCanvasObjectMode(() => "after")
+    // // HACK draw text?
+    // .nodeCanvasObject((node, ctx, globalScale) => {
+    //   // draw text only for nodes connected to the current node
+    //   let isConnected = false;
+    //   if (node.id == g.current_node_id) {
+    //     isConnected = true;
+    //   }
+    //   // loop through links to see if any connect to current
+    //   if (node.links) {
+    //     node.links.forEach((link) => {
+    //       if (link == g.current_node_id) {
+    //         isConnected = true;
+    //       }
+    //     });
+    //   }
+    //   // draw text
+    //   if (isConnected) {
+    //     const label = node.name; // HACK will be name
+    //     const fontSize = 11 / globalScale;
+    //     ctx.font = `${fontSize}px Sans-Serif`;
+    //     const textWidth = ctx.measureText(label).width;
+    //     ctx.textAlign = "center";
+    //     ctx.textBaseline = "middle";
+    //     ctx.fillStyle = g.color.neighbor_nodes_text; // curr node fill
+    //     ctx.fillText(label, node.x, node.y + 8);
+    //   }
+
+    //   // color only main node & semiconnected
+    //   if (node.id != g.current_node_id) {
+    //     if (isConnected) {
+    //       ctx.beginPath();
+    //       ctx.arc(node.x, node.y, 4, 0, 2 * Math.PI);
+    //       ctx.fillStyle = g.color.neighbors;
+    //       ctx.fill();
+    //     }
+    //     return;
+    //   }
+
+    //   var currNodeFill;
+    //   if (node.state == "taken") {
+    //     currNodeFill = g.color.taken;
+    //   } else if (node.state == "star") {
+    //     currNodeFill = g.color.star;
+    //   } else if (node.state == "plan") {
+    //     currNodeFill = g.color.plan;
+    //   } else {
+    //     currNodeFill = g.color.current_node;
+    //   }
+
+
+    //   // color node
+    //   ctx.beginPath();
+    //   ctx.arc(node.x, node.y, 4 + 1, 0, 2 * Math.PI);
+    //   ctx.fillStyle = g.color.current_node_outline; // active border
+    //   ctx.fill();
+    //   ctx.beginPath();
+    //   ctx.arc(node.x, node.y, 4, 0, 2 * Math.PI);
+    //   ctx.fillStyle = currNodeFill; // active fill
+    //   ctx.fill();
+    // })
+    .linkColor((link) => {
+      if (
+        link.source.id == g.current_node_id ||
+        link.target.id == g.current_node_id
+      ) {
+        return g.color.link_active;
+      }
+      return g.color.link_default;
+    })
+    .linkSource("source")
+    .linkTarget("target")
+    .linkDirectionalParticles(0)
+    // HACK change speed here
+    // .linkDirectionalParticleSpeed(0.008)
+    // HACK change dir particle size
+    // .linkDirectionalParticleWidth((link) => {
+    //   if (
+    //     link.source.id == g.current_node_id ||
+    //     link.target.id == g.current_node_id
+    //   ) {
+    //     return 3;
+    //   }
+    //   return 0;
+    // })
+    // HACK when click
+    .onNodeClick((node) => {
+      g.current_node_id = node.id;
+      update_course_info_pane(node.id)
+    })
+    // .linkLineDash((node) => {
+    //   return false;
+    // })
+    // .linkWidth((node) => {
+    //   return 1;
+    // })
+    // .linkLabel((node) => {
+    //   return false; // can make hover explain for coreq, etc.
+    // })
+    // .linkDirectionalArrowLength((node) => {
+    //   return 0; // we can play with that too
+    // })
+    // .linkDirectionalParticleColor((node) => {
+    //   return g.color.particle;
+    // })
+    // .onNodeHover(null)
+    .onBackgroundClick(() => {
+      $('#has-info-info').addClass('d-none')
+      $('#no-info-info').removeClass('d-none')
+      g.current_node_id = null
+      console.log("background_clicked")
+    })
+
+  g.Graph = Graph;
+  load_user_data();
+  update_course_states()
+}
+
+function toggleMode() {
+  var curr = $("#toggledim").text()
+  console.log(curr)
+
+  if (curr == 'Enter 3D') {
+    g.Graph.pauseAnimation()
+
+    $("#toggledim").text("Enter 2D")
+    initGraph2()
+  }
+  if (curr == 'Enter 2D') {
+    g.Graph.pauseAnimation()
+
+    $("#toggledim").text("Enter 3D")
+    initGraph()
+  }
 }
 
 initGraph();

@@ -12,7 +12,14 @@
   <script src="lib/force-graph.js"></script>
   <script src="lib/3d-force-graph.js"></script>
   <script src="lib/d3-force.js"></script>
-
+  <script>
+    function handle(e){
+      if(e.code===13){
+        e.preventDefault();
+        search_course();
+      }
+    }
+  </script>
   <!-- css -->
   <link rel="stylesheet" href="style.css">
   <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
@@ -33,7 +40,7 @@
   <div class="info-pane">
 
     <div class="search info-module">
-      <input class="" type="text" id="search-box">
+      <input class="" type="text" id="search-box" onkeypress="enterKeyPressed(event)">
       <button onclick="search_course()">
         <i class="ri-search-2-line"></i>
       </button>

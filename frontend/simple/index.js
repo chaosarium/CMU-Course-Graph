@@ -11,6 +11,11 @@ async function fetchDataJson(json_path) {
   return data;
 }
 
+function enterKeyPressed(event){
+  if (event.keyCode===13) search_course() 
+}
+
+
 // ========== for processing course data ==========
 
 function graph_from_schema(raw) {
@@ -273,14 +278,16 @@ function zoom_select(node) {
 }
 
 function search_course() {
+  //console.log("searching course");
   let query = $('#search-box').val()
-  console.log(query)
+  let dash = query.indexOf('-')
+  if (dash===-1){query = query.slice(0,2) + '-' + query.slice(2)}
   if (!g.data.list.includes(query)) {
+    console.log(query, 'course not found')
     error("no such course");
     return;
   }
-  focus_node(query)
-  update_course_info_pane(query)
+  go_to_node(query)
 }
 
 function go_to_node(course_code) {
@@ -290,15 +297,37 @@ function go_to_node(course_code) {
 
 // ========== UI update ==========
 
+function createRequistes(someRequites){
+  result = ""
+  if (someRequites.length===0) return ""
+  else{
+    for(i=0;i<someRequites.length;i++){
+      item = someRequites[i]
+      if (item instanceof Array){
+        result += "(" + item.join(' or ') + ") "
+      }
+      else {
+        result += item
+      }
+      if (i!==someRequites.length-1) result += ' and '
+    }
+  }
+  return result;
+}
+
 function update_course_info_pane(course_code) {
   course = g.raw[course_code]
+  prereq = createRequistes(course.prereq)
+  coreq = createRequistes(course.coreq)
+  antireq = createRequistes(course.antireq)
+
   $('#course-name-show').text(course.name)
   $('#course-code-show').text(course_code)
   $('#units-show').text(course.units)
   $('#desc-show').text(course.desc)
-  $('#prereq-show').text(course.prereq)
-  $('#coreq-show').text(course.coreq)
-  $('#antireq-show').text(course.antireq)
+  $('#prereq-show').text(prereq)
+  $('#coreq-show').text(coreq)
+  $('#antireq-show').text(antireq)
 }
 
 // ========== for drawing graph ==========

@@ -211,6 +211,11 @@ function search_course() {
   update_course_info_pane(query)
 }
 
+function go_to_node(course_code) {
+  focus_node(course_code)
+  update_course_info_pane(course_code)
+}
+
 // ========== UI update ==========
 
 function update_course_info_pane(course_code) {

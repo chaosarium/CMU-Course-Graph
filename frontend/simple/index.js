@@ -182,6 +182,7 @@ function zoom_to_node() {
 
 }
 
+// helper func
 function zoom_select(node) {
   console.log("zoom select from 2d");
   if (g.Graph == undefined) {

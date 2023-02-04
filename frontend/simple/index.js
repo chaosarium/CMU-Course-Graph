@@ -384,8 +384,6 @@ function update_course_info_pane(course_code) {
 
   $('#has-info-info').removeClass('d-none')
   $('#no-info-info').addClass('d-none')
-
-  // TODO Update current buttons? grab g.course_list and see if it has state. update accordingly
 }
 
 // ========== for drawing graph ==========

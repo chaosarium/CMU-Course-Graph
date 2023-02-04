@@ -73,8 +73,8 @@ function graph_from_schema(raw) {
             if (data.list.includes(course)) {
               node.links.push(course)
               data.links.push({
-                "source": node.id,
-                "target": course,
+                "target": node.id,
+                "source": course,
                 "value": 1,
                 "type": "one_of_prereq",
                 "rest_of_prereq_in_group": node.prereq,
@@ -88,8 +88,8 @@ function graph_from_schema(raw) {
           if (data.list.includes(course)) {
             node.links.push(course)
             data.links.push({
-              "source": node.id,
-              "target": course,
+              "target": node.id,
+              "source": course,
               "value": 1,
               "type": "prereq"
             })
@@ -105,8 +105,8 @@ function graph_from_schema(raw) {
             if (data.list.includes(course)) {
               node.links.push(course)
               data.links.push({
-                "source": node.id,
-                "target": course,
+                "target": node.id,
+                "source": course,
                 "value": 1,
                 "type": "one_of_coreq",
                 "rest_of_coreq_in_group": node.coreq,
@@ -120,8 +120,8 @@ function graph_from_schema(raw) {
           if (data.list.includes(course)) {
             node.links.push(course)
             data.links.push({
-              "source": node.id,
-              "target": course,
+              "target": node.id,
+              "source": course,
               "value": 1,
               "type": "coreq"
             })
@@ -134,8 +134,8 @@ function graph_from_schema(raw) {
         if (data.list.includes(course)) {
           node.links.push(course)
           data.links.push({
-            "source": node.id,
-            "target": course,
+            "target": node.id,
+            "source": course,
             "value": 1,
             "type": "antireq"
           })
@@ -471,9 +471,9 @@ async function initGraph() {
     })
     .linkSource("source")
     .linkTarget("target")
-    .linkDirectionalParticles("value")
+    .linkDirectionalParticles(1)
     // HACK change speed here
-    .linkDirectionalParticleSpeed(0.005)
+    .linkDirectionalParticleSpeed(0.008)
     // HACK change dir particle size
     .linkDirectionalParticleWidth((link) => {
       if (
@@ -499,7 +499,7 @@ async function initGraph() {
       return false; // can make hover explain for coreq, etc.
     })
     .linkDirectionalArrowLength((node) => {
-      return 2; // we can play with that too
+      return 0; // we can play with that too
     })
     .linkDirectionalParticleColor((node) => {
       return g.color.particle;

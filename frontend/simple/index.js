@@ -214,15 +214,15 @@ function handle_course_state_toggle(course_code, new_state) {
 
 function update_course_states() {
   for (const course in g.course_list) {
-    console.info("updating", course, g.course_list[course]);
+    //console.info("updating", course, g.course_list[course]);
     if (g.data?.list.includes(course)) {
-      console.info("real course");
+      //console.info("real course");
 
       for(i in g.data?.nodes){
         node = g.data?.nodes[i]
         // console.info(node)
         if(node.id == course) {
-          console.info("found course node", node);
+          //console.info("found course node", node);
           node.state = g.course_list[course]
         }
       }
@@ -342,7 +342,7 @@ function createRequistes(someRequites){
     for(i=0;i<someRequites.length;i++){
       item = someRequites[i]
       if (item.length===1) result += item[0]
-      else result += "(" + item.join(' or ') + ") "
+     //else result += "(" + item.join(' or ') + ") "
       // console.log('item',item)
       // if (item instanceof Array){
       //   result += "(" + item.join(' or ') + ") "
@@ -369,11 +369,21 @@ function update_course_info_pane(course_code) {
   $('#prereq-show').text(prereq)
   $('#coreq-show').text(coreq)
   $('#antireq-show').text(antireq)
+  if (course_code in g.course_list) {
+    let action = g.course_list[course_code]
+    if (action==='taken') {$("#taken-button").addClass("active")}
+    else if(action==='star') {$("#star-button").addClass('active')}
+    else {$("#plan-button").addClass('active')}
+  }
+  else{
+    console.log('remove active')
+    $("#taken-button").removeClass("active")
+    $("#star-button").removeClass('active')
+    $("#plan-button").removeClass('active')
+  }
 
   $('#has-info-info').removeClass('d-none')
   $('#no-info-info').addClass('d-none')
-
-  // TODO Update current buttons? grab g.course_list and see if it has state. update accordingly
 }
 
 // ========== for drawing graph ==========

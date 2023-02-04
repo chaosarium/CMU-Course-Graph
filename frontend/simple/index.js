@@ -45,8 +45,12 @@ function change_course_state(course_code, new_state) {
 
 }
 
-function node_clicked(node) {
-  // TODO?
+function focus_node(course_code) {
+  if (!data.list.includes(course_code)) {
+    console.error('no such course on graph')
+    return
+  }
+  g.current_node_id = course_code
 }
 
 // ========== for drawing graph ========== 
@@ -126,6 +130,12 @@ async function initGraph() {
   //   ctx.fill();
 
   // })
+  .linkColor(link => {
+    if (link.source.id == g.current_node_id || link.target.id == g.current_node_id){
+        return 'red'
+    }
+    return 'lightgrey'
+  })  
   .linkSource('source')
   .linkTarget('target')
   .linkDirectionalParticles("value")
@@ -138,9 +148,13 @@ async function initGraph() {
     }
     return 0
   })
+  // HACK when click
+  .onNodeClick(node => {
+    g.current_node_id = node.id
+  })
 
-
+  return Graph
 
 }
 
-initGraph()
+g.Graph = initGraph()

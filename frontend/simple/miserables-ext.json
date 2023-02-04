@@ -1,4 +1,5 @@
 {
+    "list": ["Myriel", "Geborand"],
     "nodes": [
         { "id": "Myriel", "group": 1, "state": "starred"},
         { "id": "Napoleon", "group": 1, "state": "starred"},

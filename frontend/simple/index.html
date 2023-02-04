@@ -40,7 +40,7 @@
   <div class="info-pane">
 
     <div class="search info-module">
-      <input class="" type="text" id="search-box" onkeypress="enterKeyPressed(event)">
+      <input autocomplete="off" class="" type="text" id="search-box" onkeypress="enterKeyPressed(event)">
       <button onclick="search_course()">
         <i class="ri-search-2-line"></i>
       </button>
@@ -51,13 +51,13 @@
         <h1 id="course-name-show"><span id="course-code-show">15-251</span>: Great ideas in Theoretical Computer Science</h1>
         
         <div class="button-group">
-          <button onclick="">
+          <button id="taken-button" class="" onclick="handle_course_state_toggle(g.current_node_id, 'taken')">
             <i class="ri-checkbox-line"></i> Taken
           </button>  
-          <button onclick="">
+          <button id="star-button" class="" onclick="handle_course_state_toggle(g.current_node_id, 'star')">
             <i class="ri-star-line"></i> Star
           </button>  
-          <button onclick="">
+          <button id="plan-button" class="" onclick="handle_course_state_toggle(g.current_node_id, 'plan')">
             <i class="ri-flag-line"></i> Plan
           </button>  
         </div>

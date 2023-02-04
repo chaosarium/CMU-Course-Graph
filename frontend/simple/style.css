@@ -99,3 +99,14 @@ i::before {
     fill: rgb(255, 65, 65);
     font-size: 1.5em;
 }
+
+
+#taken-button.active {
+    background-color: green;
+}
+#star-button.active {
+    background-color: orange;
+}
+#plan-button.active {
+    background-color: red;
+}

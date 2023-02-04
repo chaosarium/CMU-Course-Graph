@@ -2,7 +2,7 @@
 
 // global
 let g = {};
-g.current_node_id = "Myriel"
+g.current_node_id = null
 g.course_list = {}
 
 async function fetchDataJson(json_path) {
@@ -153,7 +153,9 @@ async function testParse() {
 function save_user_data() {
   if (g.course_list != undefined) {
     console.log(JSON.stringify(g.course_list))
-    return ls_set('course_list', JSON.stringify(g.course_list));
+    ls_set('course_list', JSON.stringify(g.course_list));
+    update_course_states()
+    // TODO Update current buttons?
   } else {
     console.warn('nothing to save')
   }
@@ -165,8 +167,7 @@ function load_user_data() {
     g.course_list = JSON.parse(data)
     console.info('loaded data')
     
-    // TODO update g.data to update graph
-
+    update_course_states()
 
     return data
   } else {
@@ -184,16 +185,39 @@ function clear_data() {
 }
 
 function handle_course_state_toggle(course_code, new_state) {
+  if (course_code == null) {
+    return
+  }
   if (new_state == "null" || new_state == null) {
     return
   }
-
+  if (new_state == g.course_list[course_code]) {
+    delete g.course_list[course_code]
+    save_user_data()
+    return 
+  }
   g.course_list[course_code] = new_state
   save_user_data()
 }
 
 function update_course_states() {
-  // updates g.data using g.course_list
+  for (const course in g.course_list) {
+    console.info("updating", course, g.course_list[course]);
+    if (g.data?.list.includes(course)) {
+      console.info("real course");
+
+      for(i in g.data?.nodes){
+        node = g.data?.nodes[i]
+        // console.info(node)
+        if(node.id == course) {
+          console.info("found course node", node);
+          node.state = g.course_list[course]
+        }
+      }
+
+    }
+  }
+  return
 }
 
 // global cache
@@ -332,6 +356,8 @@ function update_course_info_pane(course_code) {
   $('#prereq-show').text(prereq)
   $('#coreq-show').text(coreq)
   $('#antireq-show').text(antireq)
+
+  // TODO Update current buttons? grab g.course_list and see if it has state. update accordingly
 }
 
 // ========== for drawing graph ==========
@@ -361,10 +387,10 @@ async function initGraph() {
       if (node.state == "taken") {
         return "green";
       }
-      if (node.state == "starred") {
+      if (node.state == "star") {
         return "orange";
       }
-      if (node.state == "gaol") {
+      if (node.state == "plan") {
         return "red";
       }
       return "grey";
@@ -465,7 +491,8 @@ async function initGraph() {
     .onNodeHover(null);
 
   g.Graph = Graph;
+  load_user_data();
+  update_course_states()
 }
 
 initGraph();
-load_user_data();

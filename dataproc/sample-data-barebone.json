@@ -2,18 +2,26 @@
     "list" : ["15150", "21128"], 
     "dependency": {
         "15150": {
-            "cross-listed": ["21128"],
+            "name": "Principles of Functional Programming"
+            "units": 10.0
+            "crosslisted": ["21128"],
             "prereq": [["10150"], ["38225", "38212"], ["92243"]],
             "coreq": ["15122"],
             "antireq": ["11111"],
             "min-grade": ["i don't know"]
+            "desc": "An introduction to programming based on a functional model of computation.  The functional model is a natural generalization of algebra in which programs are formulas that describe the output of a computation in terms of its inputs---that is, as a function.  But instead of being confined to real- or complex-valued functions, the functional model extends the algebraic view to a very rich class of data types, including not only aggregates built up from other types, but also functions themselves as values.  This course is an introduction to programming that is focused on the central concepts of function and type.  One major theme is the interplay between inductive types, which are built up incrementally; recursive functions, which compute over inductive types by decomposition; and proof by structural induction, which is used to prove the correctness and time complexity of a recursive function.  Another major theme is the role of types in structuring large programs into separate modules, and the integration of imperative programming through the introduction of data types whose values may be altered during computation.    NOTE",
+
         }, 
         "21128": {
-            "cross-listed": ["15150"],
+            "name": "Concepts of Mathematics"
+            "units": 12.0
+            "crosslisted": ["15150"],
             "prereq": [["10150"], ["38225", "38212"], ["92243"]],
             "coreq": ["15122"],
             "antireq": ["11111"],
             "min-grade": ["i don't know"]
+            "desc": "This course introduces the basic concepts, ideas and tools involved in doing mathematics. As such, its main focus is on presenting informal logic, and the methods of mathematical proof. These subjects are closely related to the application of mathematics in many areas, particularly computer science. Topics discussed include a basic introduction to elementary number theory, induction, the algebra of sets, relations, equivalence relations, congruences, partitions, and functions, including injections, surjections, and bijections.  A basic introduction to the real numbers, rational and irrational numbers.  Supremum and infimum of a set.  (Three 50 minute lectures, two 50 minute recitations)",
+    
         }
     }
 }

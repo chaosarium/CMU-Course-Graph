@@ -1,9 +1,6 @@
-// DYNAMIC
-///////////////////////////////////////////////////////////////////////////////
 import * as grapher_2d from './graphers/2d.js';
 import * as grapher_3d from './graphers/3d.js';
 
-const CONFIGURED_HTML_URL_PREFIX = '';
 const URL_MODE = "absolute";
 
 var graphers = [
@@ -184,7 +181,7 @@ function enable_graph(uid){
 // the args hashtable is sent to the grapher function to tell it what it needs to know to draw the graph
 function get_graph_args(uid){
         let cont = document.getElementById('A'+uid);
-        let data = get_graph_data();
+        let data = '/obs.html/data/graph.json';
 
         let original = cont.style.display
         cont.style.display = "block"
@@ -321,7 +318,7 @@ function get_node_url_adaptive(node){
     // build url: relative path
     if (URL_MODE == 'relative'){
         let url = node.rtr_url;
-        let page_depth = window.location.pathname.split('/').length - CONFIGURED_HTML_URL_PREFIX.split('/').length - 1;
+        let page_depth = window.location.pathname.split('/').length;
         if (page_depth > 0){
             return '../'.repeat(page_depth) + url;
         }

@@ -2,8 +2,8 @@
 function run(args) {
     if (window.ObsHtmlGraph.graph_dependencies_loaded['2d'] == false){
         // load three dependencies in succession and then run initGraph(args)
-        load_script_on_demand(
-            '//unpkg.com/force-graph', load_script_on_demand, ["//unpkg.com/d3-force", load_script_on_demand, ["https://d3js.org/d3.v4.min.js", initGraph, [args]]]
+        lazy_load_script(
+            '//unpkg.com/force-graph', lazy_load_script, ["//unpkg.com/d3-force", lazy_load_script, ["https://d3js.org/d3.v4.min.js", initGraph, [args]]]
         )
         // tell obshtml that the dependencies have been loaded
         window.ObsHtmlGraph.graph_dependencies_loaded['2d'] = true;

@@ -17,7 +17,7 @@ function graph_from_schema(raw) {
   let data = {}
   data.list = [] // list of all courses
   data.nodes = [] // list of course objs
-  // with id, name, links, desc, unit, prereq, coreq, antireq, min-grade
+  // with id, name, links, desc, units, prereq, coreq, antireq, min-grade
   data.links = [] // list of link objs
   // with source, target, link type
 
@@ -30,7 +30,7 @@ function graph_from_schema(raw) {
       'name': code + ' ' + course.name,
       'links': [], 
       'desc': course.desc, 
-      'unit': course.unit, 
+      'units': course.units, 
       'prereq': course.prereq, 
       'coreq': course.coreq,  
       'antireq': course.antireq, 
@@ -67,7 +67,7 @@ function graph_from_schema(raw) {
         // p is single element
         if (typeof(p) == 'string') {
           course = p
-          if (!data.list.includes(course)) {
+          if (data.list.includes(course)) {
             node.links.push(course)
             data.links.push({
               "source": node.id,

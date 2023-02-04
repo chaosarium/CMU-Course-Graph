@@ -53,6 +53,28 @@ function focus_node(course_code) {
   g.current_node_id = course_code
 }
 
+function zoom_to_node() {
+  g.Graph.zoomToFit(500, 2, node => {return zoom_select(node)})
+}
+
+function zoom_select(node) {
+  console.log('zoom select from 2d')
+  if (g.Graph == undefined){
+      return false
+  }
+
+  if (node.id == g.current_node_id){
+      return true
+  }
+  for (let i = 0; i < node.links?.length; i++){
+      if (node.links[i] == g.current_node_id){
+          return true
+      }
+  }
+  return false
+
+}
+
 // ========== for drawing graph ========== 
 
 let data
@@ -63,7 +85,7 @@ async function initGraph() {
   console.log(data)
 
   // 2D graph
-  const Graph = ForceGraph()
+  Graph = ForceGraph()
   (document.getElementById('graph'))
   .graphData(data)
   .nodeId('id')
@@ -158,9 +180,25 @@ async function initGraph() {
   .onNodeClick(node => {
     g.current_node_id = node.id
   })
+  .linkLineDash(node => {
+    return false
+  })
+  .linkWidth(node => {
+    return 1
+  })
+  .linkLabel(node => {
+    return false // can make hover explain for coreq, etc.
+  })
+  .linkDirectionalArrowLength(node => {
+    return 10 // we can play with that too
+  })
+  .linkDirectionalParticleColor(node => {
+    return 'pink'
+  })
+  .onNodeHover(null)	
 
-  return Graph
+  g.Graph = Graph
 
 }
 
-g.Graph = initGraph()
+initGraph()

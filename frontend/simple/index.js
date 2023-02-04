@@ -10,11 +10,12 @@ g.color = {
   particle: '#ffd16a',
   taken: "#327472",
   star: "#ff8f07",
-  plan: "#",
-  default_node: "",
-  current_node_outline: "",
-  link_active: "", // around active node
-  link_default: "",
+  plan: "#769af5",
+  default_node: "#999999",
+  current_node_outline: "#fff",
+  link_active: "#f2d091", // around active node
+  link_default: "#616161",
+  neighbor_nodes_text: "#fff",
 }
 
 async function fetchDataJson(json_path) {
@@ -29,6 +30,21 @@ function enterKeyPressed(event){
 
 
 // ========== for processing course data ==========
+
+function backlink(data, course_to_push_to, curr_course) {
+  // console.log('attempt push', course_to_push_to, curr_course, data.list.includes(course_to_push_to))
+  // if (data.list.includes(course_to_push_to)) {
+  //   for(i in data.nodes){
+  //     node = data.nodes[i]
+  //     // console.info(node)
+  //     if(node.id == course_to_push_to) {
+  //       // console.info("found course node", node);
+  //       node.links.push(curr_course)
+  //       // node.state = g.course_list[course]
+  //     }
+  //   }  
+  // }
+}
 
 function graph_from_schema(raw) {
 
@@ -72,6 +88,8 @@ function graph_from_schema(raw) {
           for (course of p) {
             if (data.list.includes(course)) {
               node.links.push(course)
+              backlink(data, course, node.id)
+              // data.nodes[course].links.push(node.id)
               data.links.push({
                 "target": node.id,
                 "source": course,
@@ -87,6 +105,7 @@ function graph_from_schema(raw) {
           course = p
           if (data.list.includes(course)) {
             node.links.push(course)
+            backlink(data, course, node.id)
             data.links.push({
               "target": node.id,
               "source": course,
@@ -104,6 +123,7 @@ function graph_from_schema(raw) {
           for (course of c) {
             if (data.list.includes(course)) {
               node.links.push(course)
+              backlink(data, course, node.id)
               data.links.push({
                 "target": node.id,
                 "source": course,
@@ -119,6 +139,7 @@ function graph_from_schema(raw) {
           course = p
           if (data.list.includes(course)) {
             node.links.push(course)
+            backlink(data, course, node.id)
             data.links.push({
               "target": node.id,
               "source": course,
@@ -133,6 +154,7 @@ function graph_from_schema(raw) {
         course = a
         if (data.list.includes(course)) {
           node.links.push(course)
+          backlink(data, course, node.id)
           data.links.push({
             "target": node.id,
             "source": course,
@@ -403,13 +425,11 @@ async function initGraph() {
     .nodeVal("val")
     .backgroundColor("var(--graph-background)")
     .nodeLabel("id") // HACK will change to 'name'
-    .d3Force("charge", d3.forceManyBody().strength(-30).theta(0.9).distanceMax(600))
+    .d3Force("charge", d3.forceManyBody().strength(-10).theta(0.9).distanceMax(600))
     // .d3Force("link", d3.forceLink())
     .d3Force("center", d3.forceCenter(0.05))
+    .nodeRelSize(4)
     .nodeColor((node) => {
-      if (node.id == g.current_node_id) {
-        return g.color.current_node;
-      }
       if (node.state == "taken") {
         return g.color.taken;
       }
@@ -418,6 +438,9 @@ async function initGraph() {
       }
       if (node.state == "plan") {
         return g.color.plan;
+      }
+      if (node.id == g.current_node_id) {
+        return g.color.current_node;
       }
       return g.color.default_node;
     })
@@ -445,7 +468,7 @@ async function initGraph() {
         const textWidth = ctx.measureText(label).width;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        // ctx.fillStyle = "#123"; // curr node fill
+        ctx.fillStyle = g.color.neighbor_nodes_text; // curr node fill
         ctx.fillText(label, node.x, node.y + 8);
       }
 
@@ -460,6 +483,18 @@ async function initGraph() {
         return;
       }
 
+      var currNodeFill;
+      if (node.state == "taken") {
+        currNodeFill = g.color.taken;
+      } else if (node.state == "star") {
+        currNodeFill = g.color.star;
+      } else if (node.state == "plan") {
+        currNodeFill = g.color.plan;
+      } else {
+        currNodeFill = g.color.current_node;
+      }
+
+
       // color node
       ctx.beginPath();
       ctx.arc(node.x, node.y, 4 + 1, 0, 2 * Math.PI);
@@ -467,7 +502,7 @@ async function initGraph() {
       ctx.fill();
       ctx.beginPath();
       ctx.arc(node.x, node.y, 4, 0, 2 * Math.PI);
-      ctx.fillStyle = g.color.current_node; // active fill
+      ctx.fillStyle = currNodeFill; // active fill
       ctx.fill();
     })
     .linkColor((link) => {

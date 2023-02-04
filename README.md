@@ -6,7 +6,7 @@ This repo presents the current state of team C.H.I.L.L Technology's TartanHacks 
 
 `frontend` directory is our web app
 `backend` is not in use
-`dataproc` is where we processed our data
+`dataproc` is where we got and processed our data
 
 ## Visualize connections between courses
 

@@ -12,12 +12,20 @@
   <script src="lib/3d-force-graph.js"></script>
   <script src="lib/d3-force.js"></script>
 
+  <!-- css -->
+  <link rel="stylesheet" href="style.css">
+  <script src="https://kit.fontawesome.com/e7adfd9197.js" crossorigin="anonymous"></script>
+
   <!-- everything in there -->
   <script src="index.js"></script>
 
+  <!-- jquery -->
+  <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+
   <style>
     body {
-      margin: 0
+      margin: 0;
+      font-family: 'Lora', serif;
     }
   </style>
   
@@ -26,5 +34,36 @@
 <body>
 
   <div id="graph"></div>
+
+  <div class="userLogin">
+    <button class="loginButton"><i class="fa-solid fa-user fa-2xl" style="color: #eddbbf"></i> </circle>
+  </div>
+  <div class="split">
+      <div class="split top">
+          <div class="graph-control">
+              <i class="fa-solid fa-magnifying-glass fa-xl" style="color: #eddbbf"></i> <input class="search-box" type="text" id="search-box">
+              <button onclick="search_course()">go</button>
+          </div>
+      </div>
+      <div class="split bottom">
+          <div class="course-detail">
+              <div class="course-overview">
+                <span id="course-name-show">Great ideas in Theoretical Computer Science</span>
+                <b></b><span id="course-code-show">15-251</span></b>                    
+              </div> 
+              <div class="course-logistics">
+                  <p>Units: <span id="units-show"></span></p>
+                  <p>Desc: <span id="desc-show"></span></p>
+              </div> 
+              <div class="course-details">
+                  <p>Pre-requisite: <span id="prereq-show">nothing</span></p>
+                  <p>Co-requisite: <span id="coreq-show">nothing</span></p>
+                  <p>Anti-requisite: <span id="antireq-show">nothing</span></p>
+              </div>
+          </div>
+      </div>
+  </div>
+
+
 
 </body>

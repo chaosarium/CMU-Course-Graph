@@ -200,10 +200,35 @@ function zoom_select(node) {
   return false;
 }
 
+function search_course() {
+  let query = $('#search-box').val()
+  console.log(query)
+  if (!g.data.list.includes(query)) {
+    error("no such course");
+    return;
+  }
+  focus_node(query)
+  update_course_info_pane(query)
+}
+
+// ========== UI update ==========
+
+function update_course_info_pane(course_code) {
+  course = g.raw[course_code]
+  $('#course-name-show').text(course.name)
+  $('#course-code-show').text(course_code)
+  $('#units-show').text(course.units)
+  $('#desc-show').text(course.desc)
+  $('#prereq-show').text(course.prereq)
+  $('#coreq-show').text(course.coreq)
+  $('#antireq-show').text(course.antireq)
+}
+
 // ========== for drawing graph ==========
 
 async function initGraph() {
   let raw = await fetchDataJson('../../../dataproc/full_list.json')
+  g.raw = raw
 
   g.data = graph_from_schema(raw)
   // g.data = await fetchDataJson("miserables-ext.json");
@@ -308,6 +333,7 @@ async function initGraph() {
     // HACK when click
     .onNodeClick((node) => {
       g.current_node_id = node.id;
+      update_course_info_pane(node.id)
     })
     .linkLineDash((node) => {
       return false;

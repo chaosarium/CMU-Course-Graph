@@ -2,7 +2,7 @@
 
 > Enlighten your path!
 
-CMU Graphic Course Explorer is a graph-based exploration tool that visualizes the dependencies of CMU courses. It is developed by the team C.H.I.L.L Technology during the 2023 TartanHacks. You are welcome to play around with the model, check out courses you have taken, save the courses you like, and plan your future path!
+CMU Graphic Course Explorer is a graph-based exploration tool that visualizes the dependencies of CMU courses. It is developed by the team C.H.I.L.L Technology during the 2023 TartanHacks. You are welcome to play around with the model, check out the courses you have taken, save the courses you like, and plan your future path!
 
 ## Visualize Connections between Courses
 ![Gif](https://user-images.githubusercontent.com/116918111/216792082-63e3cebd-55f4-4c66-a5eb-c2a21c9deb2b.gif)
@@ -27,4 +27,5 @@ Sources Code
 
 
 Begin Your Envision!
+
 -C.H.I.L.L. Technology

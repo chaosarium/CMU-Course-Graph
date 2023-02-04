@@ -106,7 +106,7 @@ button {
     fill: rgb(255, 65, 65);
 }
 
-.search i::before {
+i::before {
     font-size: 1.5em;
 }
 

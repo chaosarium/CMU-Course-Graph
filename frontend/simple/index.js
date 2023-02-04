@@ -2,13 +2,19 @@
 
 // global
 let g = {};
-g.current_node_id = "Myriel";
+g.current_node_id = "Myriel"
+g.course_list = {}
 
 async function fetchDataJson(json_path) {
   const response = await fetch(json_path);
   const data = await response.json();
   return data;
 }
+
+function enterKeyPressed(event){
+  if (event.keyCode===13) search_course() 
+}
+
 
 // ========== for processing course data ==========
 
@@ -141,14 +147,35 @@ async function testParse() {
 
 // ========== for saving, retriving user data ==========
 
+// userdata shall look like {"courseNum": "state"}
+// datatype state = taken | star | plan
+
 function save_user_data() {
-  // TODO
-  return true;
+  if (g.course_list != undefined) {
+    console.log(JSON.stringify(g.course_list))
+    return ls_set('course_list', JSON.stringify(g.course_list));
+  } else {
+    console.warn('nothing to save')
+  }
 }
 
 function load_user_data() {
-  // TODO
-  return {};
+  let data = ls_get('course_list')
+  if (data) {
+    g.course_list = JSON.parse(data)
+    console.info('loaded data')
+    
+    // TODO update g.data to update graph
+
+
+    return data
+  } else {
+    data = {}
+    g.course_list = data
+    save_user_data()
+    console.info('made new data')
+    return data
+  }
 }
 
 function clear_data() {
@@ -156,10 +183,47 @@ function clear_data() {
   return;
 }
 
+// global cache
+var cacheAvailable = null;
+
+// local storage stuff
+function ls_test_available() {
+    if (cacheAvailable != null) {
+        return cacheAvailable
+    }
+    try {
+        window.localStorage.setItem('testVal', 'testVal');
+        window.localStorage.removeItem('testVal');
+        cacheAvailable = true;
+        return true;
+    } catch (e) {
+        cacheAvailable = false;
+        return false;
+    }
+}
+
+function ls_get(key) {
+    if (ls_test_available() == false) {
+        return false
+    }
+    return window.localStorage.getItem(key);
+}
+function ls_set(key, value) {
+    if (ls_test_available() == false) {
+        return false
+    }
+    return window.localStorage.setItem(key, value);
+}
+
 // ========== for manipulating data ==========
 
 function filter() {
   // TODO
+}
+
+function no_orphan(raw) {
+  // TODO
+  // output graph without orphan
 }
 
 // ========== UI interaction ==========
@@ -256,7 +320,7 @@ function update_course_info_pane(course_code) {
 // ========== for drawing graph ==========
 
 async function initGraph() {
-  let raw = await fetchDataJson('../../../dataproc/full_list.json')
+  let raw = await fetchDataJson('data/full_list.json')
   g.raw = raw
 
   g.data = graph_from_schema(raw)
@@ -268,9 +332,11 @@ async function initGraph() {
     .graphData(g.data)
     .nodeId("id")
     .nodeVal("val")
-    .backgroundColor("#eee")
+    .backgroundColor("var(--graph-background)")
     .nodeLabel("id") // HACK will change to 'name'
-    // .d3Force("charge", d3.forceManyBody().strength('-30'))
+    .d3Force("charge", d3.forceManyBody().strength(-30).theta(0.9).distanceMax(600))
+    // .d3Force("link", d3.forceLink())
+    .d3Force("center", d3.forceCenter(0.05))
     .nodeColor((node) => {
       if (node.id == g.current_node_id) {
         return "blue";
@@ -374,7 +440,7 @@ async function initGraph() {
       return false; // can make hover explain for coreq, etc.
     })
     .linkDirectionalArrowLength((node) => {
-      return 10; // we can play with that too
+      return 2; // we can play with that too
     })
     .linkDirectionalParticleColor((node) => {
       return "pink";

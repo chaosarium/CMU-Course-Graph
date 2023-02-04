@@ -155,6 +155,7 @@ function save_user_data() {
     console.log(JSON.stringify(g.course_list))
     ls_set('course_list', JSON.stringify(g.course_list));
     update_course_states()
+    // TODO Update current buttons?
   } else {
     console.warn('nothing to save')
   }
@@ -200,13 +201,11 @@ function handle_course_state_toggle(course_code, new_state) {
 }
 
 function update_course_states() {
-  // TODO updates g.data using g.course_list
   for (const course in g.course_list) {
     console.info("updating", course, g.course_list[course]);
     if (g.data?.list.includes(course)) {
       console.info("real course");
 
-      
       for(i in g.data?.nodes){
         node = g.data?.nodes[i]
         // console.info(node)
@@ -215,7 +214,6 @@ function update_course_states() {
           node.state = g.course_list[course]
         }
       }
-
 
     }
   }
@@ -354,6 +352,8 @@ function update_course_info_pane(course_code) {
   $('#prereq-show').text(prereq)
   $('#coreq-show').text(coreq)
   $('#antireq-show').text(antireq)
+
+  // TODO Update current buttons? grab g.course_list and see if it has state. update accordingly
 }
 
 // ========== for drawing graph ==========

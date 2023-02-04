@@ -1,5 +1,3 @@
-var RELATIVE_PATHS = 0;
-
 // global cache
 var cacheAvailable = null;
 
@@ -47,4 +45,11 @@ function lazy_load_script(path, callback, callback_args) {
 
     // add script tag to the end of body
     document.getElementsByTagName("body")[0].appendChild(elScript);
+}
+
+function rem(rem) {
+    return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
+}
+function vh() {
+    return Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
 }

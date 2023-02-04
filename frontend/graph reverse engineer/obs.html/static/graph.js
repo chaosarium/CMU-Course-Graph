@@ -11,31 +11,15 @@ var graphers_hash = {
 	'2d': {'id': '2d', 'name': '2d', 'module': grapher_2d},
 	'3d': {'id': '3d', 'name': '3d', 'module': grapher_3d}
 }
-// // DYNAMIC
-// ///////////////////////////////////////////////////////////////////////////////
-// import * as grapher_custom from '/obs.html/static/graphers/custom.js';
-// import * as grapher_3d from '/obs.html/static/graphers/3d.js';
-// import * as grapher_2d from '/obs.html/static/graphers/2d.js';
 
-// var graphers = [
-// 	{'id': 'custom', 'name': 'custom', 'module': grapher_custom},
-// 	{'id': '3d', 'name': '3d', 'module': grapher_3d},
-// 	{'id': '2d', 'name': '2d', 'module': grapher_2d}
-// ]
-// var graphers_hash = {
-// 	'custom': {'id': 'custom', 'name': 'custom', 'module': grapher_custom},
-// 	'3d': {'id': '3d', 'name': '3d', 'module': grapher_3d},
-// 	'2d': {'id': '2d', 'name': '2d', 'module': grapher_2d}
-// }
-
-
-// INFORMATION
-//////////////////////////////////////////////////////////////////////////////
-// These help in avoiding reloading dependencies when they are already loaded
+// RESOURSEC: avoid reloading js
 var graph_dependencies_loaded = {}
 graphers.forEach(grapher => {
     graph_dependencies_loaded[grapher.id] = false;
 });
+
+
+// QOL
 
 // Set functions to be called via a hashtable so that we can overwrite certain functions per graph type
 var default_actions = {
@@ -45,35 +29,40 @@ var default_actions = {
     'select_node': graph_select_node
 }
 
+// dictionary where color info get added
 var default_colors = {
-    'bg': 'var(--graph-bg)',    // only color where var value is allowed
+    'bg': '#eeeeee',    // only color where var value is allowed
     'node_inactive': '#909099',
-    'node_active': '#7f6df2',
-    'node_semiactive': '#b6abff',
-    'node_active_border': '#dcddde',
+    'node_active': 'blue',
+    'node_semiactive': 'sky blue',
+    'node_active_border': '#red',
     'link_active': '#7f6df2',
     'link_inactive': '#2e2e2e',
-    'text': '#dcddde'
+    'text': '#111'
 }
 
-// Graph listing mutations
-//////////////////////////////////////////////////////////////////////////////
-var graphs = {};                                // each graph has an object in this hashtable. see new_graph_listing() for type
 
-function new_graph_listing(){
-    return {
-        'current_node_id': '',                  // the currently selected node
-        'pinned_node': '',                      // the node that this graph belongs to
-        'grapher_module': null,                 // the code that is responsible for creating  the graph object below. should be a module that exports a run() method.
-        'graph': null,                          // the actual graph object responsible for showing the graph
-        'active': false,                        // whether the graph is currently loaded and visible
-        'grapher_id': '',                       // e.g. '2D'
-        'container': null,                      // the div that contains the graph
-        'width': 0,                             // width of the container in px
-        'height': 0,                            // height of the container in px
-        'actions': clone(default_actions),      // what functions to call based on which actions
+// MANAGING GRAPHS
+
+var graphs = {};
+
+function new_graph_listing() {
+    const res = {
+        'current_node_id': '', // the currently selected node
+        'pinned_node': '', // the node that this graph belongs to
+        'grapher_module': null, // the code that is responsible for creating  the graph object below. should be a module that exports a run() method.
+        'graph': null, // the actual graph object responsible for showing the graph
+        'active': false, // whether the graph is currently loaded and visible
+        'grapher_id': '', // e.g. '2D'
+        'container': null, // the div that contains the graph
+        'width': 0, // width of the container in px
+        'height': 0, // height of the container in px
+        'actions': clone(default_actions), // what functions to call based on which actions
         'colors': clone(default_colors)
     }
+    console.log('graph listing')
+    console.log(res)
+    return res
 }
 
 function add_graph(uid, pinned_node, grapher_id, container){
@@ -93,6 +82,7 @@ function add_graph(uid, pinned_node, grapher_id, container){
 
     container.style.display = original;
 }
+
 function remove_graph(uid, cont, close){
     cont.innerHTML = "";
     
@@ -104,17 +94,20 @@ function remove_graph(uid, cont, close){
     }
 }
 
-// Initialisation
-//////////////////////////////////////////////////////////////////////////////
+
+
+
+
+// INIT... not the most useful thing
 function arm_page(container){
     // fetch or set default graph type values
-    let grapher_name = ls_get('grapher_name');
+    let grapher_name = ls_get('grapher_name'); // also usually going to be '2d'?
     if (!grapher_name){
         ls_set('grapher_name', graphers[0].name);
         grapher_name = graphers[0].name;
     }
 
-    let grapher_id = ls_get('grapher_id');
+    let grapher_id = ls_get('grapher_id'); // usually going to be '2d'
     if (!grapher_id){
         ls_set('grapher_id', graphers[0].id);
         grapher_id = graphers[0].id;
@@ -134,13 +127,19 @@ function arm_page(container){
     );
 }
 
+
+// build graph
 function run(button, ntid, pinned_node)
 {
-    // Get elements
+    // Get elements... and get set attributes stuff.... whatever
     let level = button.getAttribute('level');
+    console.log('level:', level)
     let uid = ntid + level
-
+    console.log('ntid:', ntid)
+    console.log('uid:', uid)
+    
     let cont = document.getElementById('A'+uid);
+    console.log('cont:', cont) // container
     let type_button = document.getElementById('C'+uid);
     
     let grapher_id = type_button.getAttribute('grapher_id')
@@ -180,27 +179,35 @@ function enable_graph(uid){
 
 // the args hashtable is sent to the grapher function to tell it what it needs to know to draw the graph
 function get_graph_args(uid){
-        let cont = document.getElementById('A'+uid);
-        let data = '/obs.html/data/graph.json';
+    console.log('getting args')
 
-        let original = cont.style.display
-        cont.style.display = "block"
-        let width = cont.clientWidth;
-        let height = cont.clientHeight;
-        cont.style.display = original;
+    let cont = document.getElementById('A'+uid); // graph container
+    let data = '/obs.html/data/graph.json';
 
-        let args = {
-                'uid': uid,
-                'graph_container': cont, 
-                'width': width, 
-                'height': height, 
-                'data': data, 
-                'node': null, 
-                'link': null,
-                'coalesce_force': '-30'
-            }
-        return args
+    let original = cont.style.display
+    cont.style.display = "block"
+    let width = cont.clientWidth;
+    let height = cont.clientHeight;
+    cont.style.display = original;
+
+    console.log(data)
+
+    let args = {
+            'uid': uid,
+            'graph_container': cont, 
+            'width': width, 
+            'height': height, 
+            'data': data, // data relURL
+            'node': null, 
+            'link': null,
+            'coalesce_force': '-30'
+        }
+    return args
 }
+
+
+
+
 
 // UPDATE/RELOAD ACTIONS
 ///
@@ -253,6 +260,7 @@ function _toggle_graph_type_button(button){
 
     return graphers[next_list_i];
 }
+
 function set_grapher(grapher_listing, uid){
     // update localstorage
     // local storage keeps track of the user's latest choice for grapher, to use this as the next default
@@ -275,12 +283,12 @@ function set_grapher(grapher_listing, uid){
 // OVERWRITABLE ACTIONS
 //////////////////////////////////////////////////////////////////////////////
 function graph_left_click(args){
-        return act(args, 'open_link')(args)()
+    return act(args, 'open_link')(args)()
 }
 
 function graph_right_click(args){
-        //return graph_select_node(args, graph)
-        return act(args, 'select_node')(args)
+    //return graph_select_node(args, graph)
+    return act(args, 'select_node')(args)
 }
 
 // LEAF ACTIONS
@@ -343,17 +351,16 @@ function graph_select_node(args){
     return false;
 }
 
+
+
 // HELPER FUNCTIONS
 //////////////////////////////////////////////////////////////////////////////
-
 function act(args, action_name){
     return graphs[args.uid].actions[action_name]
 }
 
-
-
 function test(){
-    console.log('bla')
+    console.log('Made at Gates')
 }
 
 function clone(obj) {
@@ -374,9 +381,8 @@ function clone(obj) {
     throw new Error("Unable to copy obj! Its type isn't supported.");
 }
 
-
 export { 
-    test,
+    test, // prints random things
     switch_graph_type,
     run, 
     graphs, 

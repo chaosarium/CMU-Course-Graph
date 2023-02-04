@@ -2,10 +2,10 @@ function run(args) {
     function start(){
         args.graph_container.style.display = "block";       // open div right before loading the graph to avoid opening an empty div
         initGraph_3d(args)
-        window.ObsHtmlGraph.graph_dependencies_loaded['3d'] = true;
+        window.graphModule.graph_dependencies_loaded['3d'] = true;
     }
 
-    if (window.ObsHtmlGraph.graph_dependencies_loaded['3d'] == false){
+    if (window.graphModule.graph_dependencies_loaded['3d'] == false){
         lazy_load_script(
             '/obs.html/static/3d-force-graph.js', 
             start,
@@ -18,7 +18,7 @@ function run(args) {
 }
 
 function initGraph_3d(args) {
-    let g = window.ObsHtmlGraph.graphs[args.uid];
+    let g = window.graphModule.graphs[args.uid];
     g.graph = ForceGraph3D()
         (args.graph_container)
         .jsonUrl(args.data)

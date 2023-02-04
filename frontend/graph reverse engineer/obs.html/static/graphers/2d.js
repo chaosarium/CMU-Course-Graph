@@ -1,12 +1,12 @@
-// This function is called by obshtml when it wants to open the graph
+// ENTRYPOINT
 function run(args) {
-    if (window.ObsHtmlGraph.graph_dependencies_loaded['2d'] == false){
+    if (window.graphModule.graph_dependencies_loaded['2d'] == false){
         // load three dependencies in succession and then run initGraph(args)
         lazy_load_script(
             '//unpkg.com/force-graph', lazy_load_script, ["//unpkg.com/d3-force", lazy_load_script, ["https://d3js.org/d3.v4.min.js", initGraph, [args]]]
         )
         // tell obshtml that the dependencies have been loaded
-        window.ObsHtmlGraph.graph_dependencies_loaded['2d'] = true;
+        window.graphModule.graph_dependencies_loaded['2d'] = true;
 
     }
     else {
@@ -15,21 +15,31 @@ function run(args) {
     }
 }
 
+
+
+
+// MAIN
+
 function initGraph(args) {
+
+    console.info('initing graph with args', args)
+
     // open div right before loading the graph to avoid opening an empty div
     args.graph_container.style.display = "block";
 
     // Load data then start graph
-    fetch(args.data).then(res => res.json()).then(data => {
+    fetch(args.data).then(res => res.json()).then(data => { // just going to that url and grabbing json
+
+        console.info('got data, finally', data)
 
         // overwrites
-        let g = window.ObsHtmlGraph.graphs[args.uid];
+        let g = window.graphModule.graphs[args.uid];
         g.actions['select_node'] = function(args, graph){
             return graph_select_node(args, graph)
         }
 
         g.graph = ForceGraph()
-            (args.graph_container)
+            (args.graph_container) // where to put graph
             .graphData(data)
             .width(args.width)
             .maxZoom(10)
@@ -91,47 +101,70 @@ function initGraph(args) {
                 return g.colors.link_inactive
             })
             .linkDirectionalParticles("value")
-            .linkDirectionalParticleSpeed(0.010)
+            
+            // HACK change speed here
+            .linkDirectionalParticleSpeed(0.005)
+            // HACK change dir particle size
             .linkDirectionalParticleWidth(link => {
                 if (link.source.id == g.current_node_id || link.target.id == g.current_node_id){
-                    return 4.0
+                    return 3
                 }
                 return 0
             })
-            // [425] Add included references as links in graph view
+            // HACK change dash type
             .linkLineDash(link => {
                 if (link.type == 'inclusion'){
                     return [1,1]
                 }
                 return false;
             })
+            // HACK what to do when click
             .onNodeClick(node => {
                 args.node = node;
                 g.actions['left_click'](args)
             })
+            // HACK what to do when click
             .onNodeRightClick(node => {
                 args.node = node;
                 g.current_node_id = node.id
                 g.actions['right_click'](args)
+            })
+            // HACK make certain node invisible
+            .nodeVisibility (node => {
+                return true
+            })
+            // HACK autocolor
+            .nodeAutoColorBy (node => {
+                // return true
+                // return some color
             })
         
         setTimeout( () => g.graph.zoomToFit(1000, rem(3), function(n){return zoom_select(n, args)}), 1000 );
     });
 }
 
-// HELPER FUNCTIONS
-/////////////////////////////////////////////////////////////////////////////////////
 
+
+
+
+
+
+// REACT TO CHANEGES
+
+// switch node focus
 function graph_select_node(args){
-    let g = window.ObsHtmlGraph.graphs[args.uid];
+    console.log('graph select node from 2d')
+    let g = window.graphModule.graphs[args.uid];
     g.current_node_id = args.node.id;
 
     g.graph.zoomToFit(1000, rem(3), function(n){return zoom_select(n, args)})
     return false;
 }
 
+// runs whenever zoom level changes (not mouse scroll)
 function zoom_select(n, args){
-    let g = window.ObsHtmlGraph.graphs[args.uid];
+    console.log('zoom select from 2d')
+    let g = window.graphModule.graphs[args.uid];
     if (g == undefined){ // graph closed before settimeout got around to zooming
         return false
     }
@@ -147,7 +180,12 @@ function zoom_select(n, args){
     return false
 }
 
-/////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+// EXPORT
 
 // export the run() method so that it can be called by obshtml
 export { 

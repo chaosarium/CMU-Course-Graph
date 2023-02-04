@@ -6,7 +6,6 @@
   <meta charset="UTF-8" />
   <meta name="node_id" content="null">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="shortcut icon" href="/favicon.ico" />
 
   <!-- Set title -->
   <title>Testing</title>
@@ -14,17 +13,10 @@
   <!-- Includes -->
   <script src="/obs.html/static/obsidian_core.js"></script>
   <link rel="stylesheet" href="/obs.html/static/master.css" />
-  <script src="/obs.html/static/flexsearch.bundle.js"></script>
 
-  <!-- Onload tweaks -->
-  <script>
-    const CURRENT_NODE = 'null';
-    const HTML_URL_PREFIX = '';
-    const PAGE_DEPTH = 2;
-  </script>
 </head>
 
-<body class="theme-obs-light">
+<body>
 
   <div id="page_holder" class="flex_col">
 
@@ -35,7 +27,7 @@
           Show Graph
         </button>
         <button class="graph_button graph_type_button" id="Cgraph_full_page"
-          style="flex:1; margin:0px; margin-right:0.2rem;" onclick="window.ObsHtmlGraph.switch_graph_type(this);">
+          style="flex:1; margin:0px; margin-right:0.2rem;" onclick="window.graphModule.switch_graph_type(this);">
           2D
         </button>
       </div>
@@ -45,7 +37,9 @@
 
   </div>
 
+
   <script type="module">
+    // load full graph when ready
     document.addEventListener('DOMContentLoaded', load_fullpage_graph);
 
     function load_fullpage_graph() {
@@ -56,39 +50,49 @@
         ls_set('graph_type_d', '2D');
         type_d = '2D';
       }
+      // change text on graph type selection button
       document.getElementById('Cgraph_full_page').innerHTML = type_d;
 
       import('/obs.html/static/graph.js').then((Module) => {
-        window.ObsHtmlGraph = Module;
-        window.ObsHtmlGraph.arm_page(document.getElementById('page_holder'))
+        window.graphModule = Module;
 
-        // overwrites
-        window.ObsHtmlGraph.default_actions['open_link'] = function (args) {
+
+
+        // initialise graph
+        window.graphModule.arm_page(document.getElementById('page_holder'))
+
+
+
+        // overwrites clicking actions
+        window.graphModule.default_actions['open_link'] = function (args) {
           console.log('hi openlink')
-          return window.ObsHtmlGraph.graph_open_link_normal(args)()
+          return window.graphModule.graph_open_link_normal(args)()
         }
-        window.ObsHtmlGraph.default_actions['left_click'] = function (args) {
+        window.graphModule.default_actions['left_click'] = function (args) {
           console.log('hi leftclick')
-          let g = window.ObsHtmlGraph.graphs[args.uid];
+          let g = window.graphModule.graphs[args.uid];
           return g.actions['select_node'](args);
         }
-        window.ObsHtmlGraph.default_actions['right_click'] = function (args) {
+        window.graphModule.default_actions['right_click'] = function (args) {
           console.log('hi rightclick')
-          let g = window.ObsHtmlGraph.graphs[args.uid];
+          let g = window.graphModule.graphs[args.uid];
           return g.actions['open_link'](args);
         }
+
+
 
         // Get node id from the page where we clicked on the icon for the fullpage graph
         const urlParams = new URLSearchParams(window.location.search);
         const pinnedNode = urlParams.get('node');
 
+
+
         // Immediately run graph instead of waiting for button click
-        window.ObsHtmlGraph.run(document.getElementById('Bgraph_full_page'), 'graph_full_page', pinnedNode);
+        window.graphModule.run(document.getElementById('Bgraph_full_page'), 'graph_full_page', pinnedNode);
       })
     }
   </script>
 
 
 </body>
-
 </html>

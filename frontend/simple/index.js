@@ -162,6 +162,11 @@ function filter() {
   // TODO
 }
 
+function no_orphan(raw) {
+  // TODO
+  // output graph without orphan
+}
+
 // ========== UI interaction ==========
 
 function change_course_state(course_code, new_state) { }
@@ -244,9 +249,11 @@ async function initGraph() {
     .graphData(g.data)
     .nodeId("id")
     .nodeVal("val")
-    .backgroundColor("#eee")
+    .backgroundColor("var(--graph-background)")
     .nodeLabel("id") // HACK will change to 'name'
-    // .d3Force("charge", d3.forceManyBody().strength('-30'))
+    .d3Force("charge", d3.forceManyBody().strength(-30).theta(0.9).distanceMax(600))
+    // .d3Force("link", d3.forceLink())
+    .d3Force("center", d3.forceCenter(0.05))
     .nodeColor((node) => {
       if (node.id == g.current_node_id) {
         return "blue";
@@ -350,7 +357,7 @@ async function initGraph() {
       return false; // can make hover explain for coreq, etc.
     })
     .linkDirectionalArrowLength((node) => {
-      return 10; // we can play with that too
+      return 2; // we can play with that too
     })
     .linkDirectionalParticleColor((node) => {
       return "pink";

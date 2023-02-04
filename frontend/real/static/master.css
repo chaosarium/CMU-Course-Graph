@@ -2306,8 +2306,8 @@ h1 {
 }
 
 #page_holder {
-    background-color: var(--header-bg);
-    color: rgb(var(--normal-text-color));
+    /* background-color: var(--header-bg); */
+    /* color: rgb(var(--normal-text-color)); */
 }
 
 blockquote {

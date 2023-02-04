@@ -1,42 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <!-- Page information -->
   <meta charset="UTF-8" />
   <meta name="node_id" content="null">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- Set title -->
   <title>Testing</title>
 
-  <!-- Includes -->
-  <script src="/obs.html/static/obsidian_core.js"></script>
-  <link rel="stylesheet" href="/obs.html/static/master.css" />
+  <script src="static/obsidian_core.js"></script>
+  <link rel="stylesheet" href="static/master.css" />
 
 </head>
-
 <body>
 
-  <div id="page_holder" class="flex_col">
+  <div id="page_holder">
 
-    <div class="graph_full_page">
-      <div class="graph-button-row" style="display:flex;">
-        <button class="graph_button graph_show_button" id="Bgraph_full_page" level="" note_temp_id="graph_full_page"
-          style="visibility: hidden; margin:0px">
-          Show Graph
-        </button>
-        <button class="graph_button graph_type_button" id="Cgraph_full_page"
-          style="flex:1; margin:0px; margin-right:0.2rem;" onclick="window.graphModule.switch_graph_type(this);">
-          2D
-        </button>
-      </div>
-      <div id="Agraph_full_page" class="graph_div_full"></div>
+    <div>
+
+      <!-- dummy button -->
+      <button class="graph_button graph_show_button" id="Bgraph_full_page" level="" note_temp_id="graph_full_page"
+        style="visibility: hidden; margin:0px">
+        Show Graph
+      </button>
+
+      <!-- 2d 3d toggle button -->
+      <button class="graph_button graph_type_button" id="Cgraph_full_page"
+        style="flex:1; margin:0px; margin-right:0.2rem;" onclick="window.graphModule.switch_graph_type(this);">
+        2D
+      </button>
 
     </div>
+    
+    <div id="Agraph_full_page" class="graph_div_full"></div>
 
   </div>
-
 
   <script type="module">
     // load full graph when ready
@@ -53,7 +49,7 @@
       // change text on graph type selection button
       document.getElementById('Cgraph_full_page').innerHTML = type_d;
 
-      import('/obs.html/static/graph.js').then((Module) => {
+      import('/static/graph.js').then((Module) => {
         window.graphModule = Module;
 
 
@@ -92,7 +88,6 @@
       })
     }
   </script>
-
 
 </body>
 </html>

@@ -7,7 +7,7 @@ function run(args) {
 
     if (window.graphModule.graph_dependencies_loaded['3d'] == false){
         lazy_load_script(
-            '/obs.html/static/3d-force-graph.js', 
+            '/static/3d-force-graph.js', 
             start,
             []
         )

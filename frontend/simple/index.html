@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="node_id" content="null">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Testing</title>
+
+  <script src="lib/force-graph.js"></script>
+  
+</head>
+
+<body>
+  <div id="graph"></div>
+
+  <script>
+    async function fetchDataJson() {
+      const response = await fetch('miserables.json');
+      const data = await response.json();
+      return data;
+    }
+
+    let data
+
+    async function initGraph() {     
+      data = await fetchDataJson()
+      console.log(data)
+    
+      const Graph = ForceGraph()
+        (document.getElementById('graph'))
+        .graphData(data)
+        .nodeId('id')
+        .nodeVal('val')
+        .nodeLabel('id')
+        .nodeAutoColorBy('group')
+        .linkSource('source')
+        .linkTarget('target')
+
+    }
+
+    initGraph()
+
+  </script>
+
+</body>

@@ -182,7 +182,7 @@ function get_graph_args(uid){
     console.log('getting args')
 
     let cont = document.getElementById('A'+uid); // graph container
-    let data = '/obs.html/data/graph.json';
+    let data = '/data/graph.json';
 
     let original = cont.style.display
     cont.style.display = "block"

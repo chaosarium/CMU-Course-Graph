@@ -13,8 +13,8 @@
   <script src="lib/3d-force-graph.js"></script>
   <script src="lib/d3-force.js"></script>
   <script>
-    function handle(e){
-      if(e.code===13){
+    function handle(e) {
+      if (e.code === 13) {
         e.preventDefault();
         search_course();
       }
@@ -29,8 +29,9 @@
   <script src="index.js"></script>
 
   <!-- jquery -->
-  <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
-  
+  <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+    crossorigin="anonymous"></script>
+
 </head>
 
 <body>
@@ -47,38 +48,51 @@
     </div>
 
     <div class="detail">
-      <div class="overview info-module">
-        <h1 id="course-name-show"><span id="course-code-show">15-251</span>: Great ideas in Theoretical Computer Science</h1>
-        
-        <div class="button-group">
-          <button id="taken-button" class="" onclick="handle_course_state_toggle(g.current_node_id, 'taken')">
-            <i class="ri-checkbox-line"></i> Taken
-          </button>  
-          <button id="star-button" class="" onclick="handle_course_state_toggle(g.current_node_id, 'star')">
-            <i class="ri-star-line"></i> Star
-          </button>  
-          <button id="plan-button" class="" onclick="handle_course_state_toggle(g.current_node_id, 'plan')">
-            <i class="ri-flag-line"></i> Plan
-          </button>  
+
+      <div id="no-info-info" class="">
+        <div class="overview info-module">
+          <p>Click on a node or search for a course to view info.</p>
+        </div>
+      </div>
+
+      <div id="has-info-info" class="d-none">
+
+        <div class="overview info-module">
+          <h1><span id="course-code-show">15-251</span>: <span id="course-name-show">Great ideas in Theoretical Computer
+            Science</span></h1>
+
+          <div class="button-group">
+            <button id="taken-button" class="" onclick="handle_course_state_toggle(g.current_node_id, 'taken')">
+              <i class="ri-checkbox-line"></i> Taken
+            </button>
+            <button id="star-button" class="" onclick="handle_course_state_toggle(g.current_node_id, 'star')">
+              <i class="ri-star-line"></i> Star
+            </button>
+            <button id="plan-button" class="" onclick="handle_course_state_toggle(g.current_node_id, 'plan')">
+              <i class="ri-flag-line"></i> Plan
+            </button>
+          </div>
+
         </div>
 
-      </div>
+        <div class="overview info-module">
+          <p><b>Units:</b> <span id="units-show"></span></p>
 
-      <div class="overview info-module">
-        <p><b>Units:</b> <span id="units-show"></span></p>
+          <details>
+            <summary><b>Course Decription</b></summary>
+            <p id="desc-show"></p>
+          </details>
+        </div>
 
-        <details>
-          <summary>Course Decription</summary>
-          <p id="desc-show"></p>
-        </details>
-      </div>
-      
-      <div class="overview info-module">
-        <p><b>Pre-requisite:</b> <span id="prereq-show">nothing</span></p>
-        <p><b>Co-requisite:</b> <span id="coreq-show">nothing</span></p>
-        <p><b>Anti-requisite:</b> <span id="antireq-show">nothing</span></p>
-      </div>
+        <div class="overview info-module">
+          <p><b>Pre-requisite:</b> <span id="prereq-show">nothing</span></p>
+          <p><b>Co-requisite:</b> <span id="coreq-show">nothing</span></p>
+          <p><b>Anti-requisite:</b> <span id="antireq-show">nothing</span></p>
+        </div>
 
+
+
+      </div>
     </div>
 
   </div>

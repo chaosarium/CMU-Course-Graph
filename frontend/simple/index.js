@@ -353,6 +353,9 @@ function update_course_info_pane(course_code) {
   $('#coreq-show').text(coreq)
   $('#antireq-show').text(antireq)
 
+  $('#has-info-info').removeClass('d-none')
+  $('#no-info-info').addClass('d-none')
+
   // TODO Update current buttons? grab g.course_list and see if it has state. update accordingly
 }
 
@@ -484,7 +487,13 @@ async function initGraph() {
     .linkDirectionalParticleColor((node) => {
       return "pink";
     })
-    .onNodeHover(null);
+    .onNodeHover(null)
+    .onBackgroundClick(() => {
+      $('#has-info-info').addClass('d-none')
+      $('#no-info-info').removeClass('d-none')
+      g.current_node_id = null
+      console.log("background_clicked")
+    })
 
   g.Graph = Graph;
   load_user_data();

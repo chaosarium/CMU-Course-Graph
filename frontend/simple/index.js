@@ -391,12 +391,14 @@ function update_course_info_pane(course_code) {
   $('#prereq-show').text(prereq)
   $('#coreq-show').text(coreq)
   $('#antireq-show').text(antireq)
+
   if (course_code in g.course_list) {
     let action = g.course_list[course_code]
     if (action==='taken') {$("#taken-button").addClass("active")}
     else if(action==='star') {$("#star-button").addClass('active')}
     else {$("#plan-button").addClass('active')}
   }
+  
   else{
     console.log('remove active')
     $("#taken-button").removeClass("active")
@@ -424,7 +426,7 @@ async function initGraph() {
     .nodeId("id")
     .nodeVal("val")
     .backgroundColor("var(--graph-background)")
-    .nodeLabel("id") // HACK will change to 'name'
+    .nodeLabel("name")
     .d3Force("charge", d3.forceManyBody().strength(-10).theta(0.9).distanceMax(600))
     // .d3Force("link", d3.forceLink())
     .d3Force("center", d3.forceCenter(0.05))
@@ -462,7 +464,7 @@ async function initGraph() {
       }
       // draw text
       if (isConnected) {
-        const label = node.id; // HACK will be name
+        const label = node.name; // HACK will be name
         const fontSize = 11 / globalScale;
         ctx.font = `${fontSize}px Sans-Serif`;
         const textWidth = ctx.measureText(label).width;

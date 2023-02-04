@@ -2,98 +2,81 @@
 
 /* Global */
 :root {
-    --graph-background: rgb(0, 0, 0);
+    --graph-background: #444;
+    --radius: 5px;
+    font-size: 12px;
+    --gap: 16px;
 }
 
+h1 {
+    font-weight: bold;
+    font-size: 2em;
+}
+h3 {
+    font-weight: bold;
+    font-size: 1.6em;
+}
 
-.userLogin{
-    position:absolute;
-    right: 10vw;
-    top: 3vw;
-    float: right;
+body {
+    margin: 0;
+    font-family: 'Lora', serif;
 }
-.loginButton{
-    border-radius: 50%;
-    height: 50px;
-    width: 50px;
-    border: none;
+
+p {
+    font-size: 1.3em;
 }
-.split{
-    width: 25%;
-    height: 85%;
-    position: fixed;
-    left: 20px;
-    float: left;
-    color: rgb(51,50,48);
+ 
+.info-pane {
+    position: absolute;
+    left: var(--gap);
+    top: var(--gap);
+    padding: 0;
+    width: 400px;
+    border-radius: var(--radius);
+
+    height: auto;
+    max-height: 100vh;
+    overflow: auto;
 }
-.top{
+
+.info-module {
+    background-color: #eddbbf;
+    padding: var(--gap);
+    border-radius: var(--radius);
+    border: 2px solid rgba(255, 167, 167, 0.574);
+    margin-bottom: var(--gap);
+
+}
+
+input {
+    all: unset;
+    background-color: rgb(214, 190, 161);
+    border-radius: var(--radius);
+    height: 32px;
+    box-sizing: border-box;
+    padding: 5px 10px;
+}
+
+button {
+    all: unset
+}
+
+.search {
+    display: flex;
+    gap: var(--gap);
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
     top: 0;
 }
 
-.bottom{
-    bottom: 0;
+.search input {
+    flex-grow: 2;
 }
-.graph-control {
-    position: absolute;
-    float: left;
-    top: 1vw;
-    overflow: auto;
-}
-input.search-box{
-    background-color: #eddbbf;
-    color: rgb(51,50,48);
-    border: none;
-    padding: 0.5em;
-    margin: 1em 1em 1em 0.5em;
-}
-.course-detail{
-    display: flex;
-    flex-direction: column;
-    float: left;
-}
-.course-overview{
-    text-align: left;
-    word-break: break;
+
+
+i::before {
+    color: rgb(255, 62, 62);
+    fill: rgb(255, 65, 65);
     font-size: 1.5em;
-    background-color: #eddbbf;
-    padding: 15px;
-    margin-bottom: 0.5em;
-}
-.course-logistics{
-    /* margin-top: 5px; */
-    border: 1em;
-    font-size:1.2em;
-    line-height:1;
-    padding-top: 1px;
-    padding-bottom: 1px;
-    padding-left: 15px;
-    background-color: #eddbbf;
-    margin-bottom: 0.5em;
-}
-.course-details{
-    font-size:1.2em;
-    line-height:1;
-    padding-top: 1px;
-    padding-bottom: 1px;
-    padding-left: 15px;
-    background-color: #eddbbf;
-    margin-bottom: 0.5em;
-}
-.highlight-path{
-    border: 1em;
-    line-height:1;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 10px;
-    background-color: #eddbbf;
-    display: flex;
-    flex-direction: row
-}
-.buildGraphBtn{
-    border-radius: 50%;
-    height: 30px;
-    width: 30px;
-    border: none;
-    margin-top: 14px;
-    background-color: #fd8e17
 }

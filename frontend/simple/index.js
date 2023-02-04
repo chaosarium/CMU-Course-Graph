@@ -4,6 +4,18 @@
 let g = {};
 g.current_node_id = null
 g.course_list = {}
+g.color = {
+  current_node: '#ffd16a',
+  neighbors: '#f2d091',
+  particle: '#ffd16a',
+  taken: "#327472",
+  star: "#ff8f07",
+  plan: "#",
+  default_node: "",
+  current_node_outline: "",
+  link_active: "", // around active node
+  link_default: "",
+}
 
 async function fetchDataJson(json_path) {
   const response = await fetch(json_path);
@@ -322,6 +334,7 @@ function go_to_node(course_code) {
 
 
 function createRequistes(someRequites){
+  return
   result = ""
   console.log(someRequites,someRequites.length)
   if (someRequites.length===0) return ""
@@ -385,18 +398,18 @@ async function initGraph() {
     .d3Force("center", d3.forceCenter(0.05))
     .nodeColor((node) => {
       if (node.id == g.current_node_id) {
-        return "blue";
+        return g.color.current_node;
       }
       if (node.state == "taken") {
-        return "green";
+        return g.color.taken;
       }
       if (node.state == "star") {
-        return "orange";
+        return g.color.star;
       }
       if (node.state == "plan") {
-        return "red";
+        return g.color.plan;
       }
-      return "grey";
+      return g.color.default_node;
     })
     .nodeCanvasObjectMode(() => "after")
     // HACK draw text?
@@ -422,7 +435,7 @@ async function initGraph() {
         const textWidth = ctx.measureText(label).width;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        ctx.fillStyle = "#123";
+        // ctx.fillStyle = "#123"; // curr node fill
         ctx.fillText(label, node.x, node.y + 8);
       }
 
@@ -431,7 +444,7 @@ async function initGraph() {
         if (isConnected) {
           ctx.beginPath();
           ctx.arc(node.x, node.y, 4, 0, 2 * Math.PI);
-          ctx.fillStyle = "pink";
+          ctx.fillStyle = g.color.neighbors;
           ctx.fill();
         }
         return;
@@ -440,11 +453,11 @@ async function initGraph() {
       // color node
       ctx.beginPath();
       ctx.arc(node.x, node.y, 4 + 1, 0, 2 * Math.PI);
-      ctx.fillStyle = "#red"; // active border
+      ctx.fillStyle = g.color.current_node_outline; // active border
       ctx.fill();
       ctx.beginPath();
       ctx.arc(node.x, node.y, 4, 0, 2 * Math.PI);
-      ctx.fillStyle = "#cyan"; // active fill
+      ctx.fillStyle = g.color.current_node; // active fill
       ctx.fill();
     })
     .linkColor((link) => {
@@ -452,9 +465,9 @@ async function initGraph() {
         link.source.id == g.current_node_id ||
         link.target.id == g.current_node_id
       ) {
-        return "red";
+        return g.color.link_active;
       }
-      return "lightgrey";
+      return g.color.link_default;
     })
     .linkSource("source")
     .linkTarget("target")
@@ -489,7 +502,7 @@ async function initGraph() {
       return 2; // we can play with that too
     })
     .linkDirectionalParticleColor((node) => {
-      return "pink";
+      return g.color.particle;
     })
     .onNodeHover(null)
     .onBackgroundClick(() => {

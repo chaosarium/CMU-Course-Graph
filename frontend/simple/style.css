@@ -6,6 +6,7 @@
     --radius: 5px;
     font-size: 12px;
     --gap: 16px;
+    --curr-node-color: #ffd16a;
 }
 
 h1 {
@@ -108,7 +109,7 @@ i::before {
 
 
 #taken-button.active {
-    background-color: green;
+    background-color: #327472;
 }
 #star-button.active {
     background-color: orange;

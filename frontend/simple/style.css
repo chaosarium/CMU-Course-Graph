@@ -109,13 +109,13 @@ i::before {
 
 
 #taken-button.active {
-    background-color: #327472;
+    background-color: #6fb7a2;
 }
 #star-button.active {
     background-color: orange;
 }
 #plan-button.active {
-    background-color: red;
+    background-color: #d8df6e;
 }
 
 details {
@@ -128,4 +128,8 @@ details summary {
 
 .d-none {
     display: none;
+}
+
+.goToCourseBtn{
+    color: red
 }

@@ -9,11 +9,11 @@ g.color = {
   neighbors: '#f2d091',
   particle: '#ffd16a',
   taken: "#327472",
-  star: "#ff8f07",
-  plan: "#",
+  star: "#ec8b3b",
+  plan: "#d8dfbe",
   default_node: "",
   current_node_outline: "",
-  link_active: "", // around active node
+  link_active: "#ffdf96", // around active node
   link_default: "",
 }
 
@@ -151,7 +151,9 @@ function graph_from_schema(raw) {
 
 async function testParse() {
   console.log('PARSING')
-  let raw = await fetchDataJson('../../../dataproc/full_list.json')
+  let path = "../../../dataproc/full_list.json"
+  console.log(path)
+  let raw = await fetchDataJson(path)
   console.log(raw)
   graph_from_schema(raw)
 }
@@ -167,7 +169,6 @@ function save_user_data() {
     console.log(JSON.stringify(g.course_list))
     ls_set('course_list', JSON.stringify(g.course_list));
     update_course_states()
-    // TODO Update current buttons?
   } else {
     console.warn('nothing to save')
   }
@@ -314,10 +315,11 @@ function zoom_select(node) {
 }
 
 function search_course() {
-  //console.log("searching course");
+  console.log("searching course");
   let query = $('#search-box').val()
   let dash = query.indexOf('-')
   if (dash===-1){query = query.slice(0,2) + '-' + query.slice(2)}
+  console.log(query)
   if (!g.data.list.includes(query)) {
     error("no such course");
     return;
@@ -334,25 +336,20 @@ function go_to_node(course_code) {
 
 
 function createRequistes(someRequites){
-  return
   result = ""
   console.log(someRequites,someRequites.length)
   if (someRequites.length===0) return ""
   else{
     for(i=0;i<someRequites.length;i++){
       item = someRequites[i]
-      if (item.length===1) result += item[0]
-     //else result += "(" + item.join(' or ') + ") "
-      // console.log('item',item)
-      // if (item instanceof Array){
-      //   result += "(" + item.join(' or ') + ") "
-      // }
-      // else {
-      //   result += item
-      // }
-      if (i!==someRequites.length-1) result += ' and '
+      if (item.length===1) {result = result + item[0]}
+      else {
+        result = result + "(" + item.join(" or ") + ") "
+      }
+      if (i!==someRequites.length-1) {result = result + ' and '}
     }
   }
+  console.log(result);
   return result;
 }
 

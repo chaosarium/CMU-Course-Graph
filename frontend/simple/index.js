@@ -59,7 +59,7 @@ function graph_from_schema(raw) {
                 "target": course,
                 "value": 1,
                 "type": "one_of_prereq",
-                "rest_of_prereq_in_group": p,
+                "rest_of_prereq_in_group": node.prereq,
               })
             }
           }
@@ -91,7 +91,7 @@ function graph_from_schema(raw) {
                 "target": course,
                 "value": 1,
                 "type": "one_of_coreq",
-                "rest_of_coreq_in_group": c,
+                "rest_of_coreq_in_group": node.coreq,
               })
             }
           }

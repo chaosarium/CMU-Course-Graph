@@ -6,6 +6,7 @@
     --radius: 5px;
     font-size: 12px;
     --gap: 16px;
+    --curr-node-color: #ffd16a;
 }
 
 h1 {
@@ -31,7 +32,8 @@ p {
     left: var(--gap);
     top: var(--gap);
     padding: 0;
-    width: 400px;
+    max-width: 400px;
+    width: 40%;
     border-radius: var(--radius);
 
     height: auto;
@@ -50,11 +52,16 @@ p {
 
 input {
     all: unset;
-    background-color: rgb(214, 190, 161);
+    background-color: rgb(223, 200, 171);
     border-radius: var(--radius);
     height: 32px;
     box-sizing: border-box;
     padding: 5px 10px;
+}
+
+input:focus {
+    background-color: rgb(206, 182, 153);
+    
 }
 
 button {
@@ -102,11 +109,23 @@ i::before {
 
 
 #taken-button.active {
-    background-color: green;
+    background-color: #327472;
 }
 #star-button.active {
     background-color: orange;
 }
 #plan-button.active {
     background-color: red;
+}
+
+details {
+    font-size: 1em;
+}
+
+details summary {
+    font-size: 1.2em;
+}
+
+.d-none {
+    display: none;
 }

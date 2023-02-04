@@ -2,7 +2,7 @@
 
 // global
 let g = {};
-g.current_node_id = "Myriel"
+g.current_node_id = null
 g.course_list = {}
 
 async function fetchDataJson(json_path) {
@@ -165,8 +165,7 @@ function load_user_data() {
     g.course_list = JSON.parse(data)
     console.info('loaded data')
     
-    // TODO update g.data to update graph
-
+    update_course_states()
 
     return data
   } else {
@@ -184,16 +183,22 @@ function clear_data() {
 }
 
 function handle_course_state_toggle(course_code, new_state) {
+  if (course_code == null) {
+    return
+  }
   if (new_state == "null" || new_state == null) {
     return
   }
-
+  if (new_state == g.course_list[course_code]) {
+    delete g.course_list[course_code]
+  }
   g.course_list[course_code] = new_state
   save_user_data()
 }
 
 function update_course_states() {
-  // updates g.data using g.course_list
+  // TODO updates g.data using g.course_list
+  return
 }
 
 // global cache

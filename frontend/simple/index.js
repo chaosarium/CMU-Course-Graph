@@ -167,17 +167,19 @@ function filter() {
 function change_course_state(course_code, new_state) { }
 
 function focus_node(course_code) {
-  if (!data.list.includes(course_code)) {
+  if (!g.data.list.includes(course_code)) {
     console.error("no such course on graph");
     return;
   }
   g.current_node_id = course_code;
+  zoom_to_node()
 }
 
 function zoom_to_node() {
   g.Graph.zoomToFit(500, 2, (node) => {
     return zoom_select(node);
   });
+
 }
 
 function zoom_select(node) {
